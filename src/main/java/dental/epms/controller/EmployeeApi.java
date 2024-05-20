@@ -1,10 +1,9 @@
 package dental.epms.controller;
 
+import dental.epms.dto.EmployeeRequestDto;
 import dental.epms.entity.EmployeeEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -16,5 +15,12 @@ public interface EmployeeApi {
     List<?> getAll();
 
     @PostMapping
-    void create(@RequestBody EmployeeEntity entity);
+    void  create(@RequestBody EmployeeRequestDto entity);
+//    public ResponseEntity<EmployeeEntity>  create(@RequestBody EmployeeRequestDto entity);
+    @PutMapping("/{id}")
+    void update(@RequestBody EmployeeRequestDto entity , @PathVariable Long id);
+
+@DeleteMapping("/{id}")
+    void delete(@PathVariable Long id );
+
 }

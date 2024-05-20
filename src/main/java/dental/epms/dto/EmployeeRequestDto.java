@@ -1,32 +1,29 @@
-package dental.epms.entity;
+package dental.epms.dto;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Setter
 @Getter
-public class EmployeeEntity {
+@Setter
+public class EmployeeRequestDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @NotBlank
     private String firstName;
-
-    private String lastName;
-
+    @NotBlank
+    private  String lastName;
+    @NotBlank
     private String patronymic;
-
+    @NotBlank
     private String userName;
-
+    @NotBlank
     private String password;
 
+    @NotNull(message = "")
     private Integer role;
 
+    @NotNull(message = "")
     private Integer room;
-
 }
