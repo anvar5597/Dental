@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TeethServiceImpl implements TeethService {
+public class    TeethServiceImpl implements TeethService {
 
     private final TeethRepository repository;
     private final TeethMapper mapper;
