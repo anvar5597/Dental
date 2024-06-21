@@ -1,4 +1,4 @@
-package dental.epms.entity;
+package dental.serviceCategory.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,22 +10,14 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class EmployeEntity {
+public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
+    private String serviceName;
 
-    private  String lastName;
-
-    private String userName;
-
-    private String password;
-
-    private Integer role;
-
-    private Integer room;
+    private Integer price;
 
 }
