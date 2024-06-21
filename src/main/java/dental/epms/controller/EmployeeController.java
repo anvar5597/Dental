@@ -1,13 +1,11 @@
 package dental.epms.controller;
 
 import dental.epms.dto.EmployeeRequestDto;
-import dental.epms.repository.EmployeeRepository;
+import dental.epms.dto.EmployeeResponseDto;
 import dental.epms.service.EmployeeServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import dental.epms.entity.EmployeeEntity;
 
 import java.util.List;
 
@@ -16,38 +14,29 @@ import java.util.List;
 public class EmployeeController implements EmployeeApi {
 
     private final EmployeeServiceImpl employeeService;
-    private final EmployeeRepository employeeRepository;
-
 
     @Override
-    public List<EmployeeEntity> getAll() {
-//        List<?> employeeEntities = employeeService.findAll();
-//        return (List<EmployeeEntity>) employeeEntities;
-    return employeeRepository.findAll();
-
-    }
-
-//    @Override
-//    public ResponseEntity<EmployeeEntity> create(EmployeeRequestDto entity) {
-//        EmployeeEntity employeeEntity = employeeService.create(entity);
-//        return ResponseEntity.ok(employeeEntity);
-//    }
-
-    @Override
-    public void create(EmployeeRequestDto entity) {
-        employeeService.create(entity);
+    public List<EmployeeResponseDto> getAll() {
+        return employeeService.findAll();
     }
 
     @Override
-    public void update(EmployeeRequestDto entity, Long id ) {
-        employeeService.update(entity , id);
+    public List<EmployeeResponseDto> getAllDoctors() {
+        return employeeService.getAllDoctors();
     }
 
+    @Override
+    public EmployeeResponseDto findEmpByID(Long id) {
+        return employeeService.getEmpByID(id);
+    }
+
+    @Override
+    public void update(EmployeeRequestDto entity, Long id) {
+        employeeService.update(entity, id);
+    }
 
     @Override
     public void delete(@PathVariable Long id) {
-
         employeeService.delete(id);
-
     }
 }

@@ -1,18 +1,17 @@
 package dental.epms.dto;
 
-
 import dental.epms.entity.ERole;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-public class EmployeeRequestDto {
-
+public class EmployeeResponseDto {
+    @NotNull
+    private Long id;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -26,7 +25,6 @@ public class EmployeeRequestDto {
     @NotBlank
     private String email;
     @NotBlank
-    @Enumerated(EnumType.STRING)
     private ERole role;
     @NotBlank
     private LocalDate birthDay;

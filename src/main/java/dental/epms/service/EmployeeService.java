@@ -1,18 +1,25 @@
 package dental.epms.service;
 
 import dental.epms.dto.EmployeeRequestDto;
-import dental.epms.entity.EmployeeEntity;
+import dental.epms.dto.EmployeeResponseDto;
+import dental.epms.entity.Employees;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-   List<?> findAll();
+    List<EmployeeResponseDto> findAll();
 
-   EmployeeEntity create(EmployeeRequestDto dto);
+    EmployeeResponseDto getEmpByID(Long empID);
 
-    EmployeeEntity update(EmployeeRequestDto dto , Long id);
+    List<EmployeeResponseDto> getAllDoctors();
 
-   void delete(Long id);
+    Employees update(EmployeeRequestDto dto, Long id);
+
+    void delete(Long id);
+
+    UserDetailsService userDetailsService();
+
 
 }
