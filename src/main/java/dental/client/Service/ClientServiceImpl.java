@@ -10,7 +10,6 @@ package dental.client.Service;
 
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
-import dental.client.entity.Client;
 import dental.client.mapper.ClientMapper;
 import dental.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,11 +53,12 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Optional<Client> update(ClientRequestDto dto, Long id) {
+    public ClientResponseDto update(ClientRequestDto dto, Long id) {
         return Optional.ofNullable(id)
                 .flatMap(repository::findById)
                 .map(entity -> mapper.update(entity, dto))
-                .map(repository::save);
+                .map(repository::save)
+                .map(mapper::toDto).get();
     }
 
     @Override
