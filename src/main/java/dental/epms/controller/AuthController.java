@@ -5,6 +5,7 @@ import dental.epms.dto.EmployeeRequestDto;
 import dental.epms.dto.EmployeeResponseDto;
 import dental.epms.dto.LoginDto;
 import dental.epms.service.AuthService;
+import dental.utils.DefaultResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/create")
-    EmployeeResponseDto create(@RequestBody EmployeeRequestDto entity){
+    DefaultResponseDto create(@RequestBody EmployeeRequestDto entity){
         return authService.create(entity);
     }
 

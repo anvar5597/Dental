@@ -8,19 +8,19 @@
 
 package dental.patientHistory.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dental.client.entity.Client;
 import dental.epms.entity.Employees;
-import dental.serviceCategory.entity.ServiceEntity;
-import dental.teeth.entity.TeethEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-public class patientHistoryEntity {
+public class PatientHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +36,14 @@ public class patientHistoryEntity {
 
     private LocalDate createdAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "services_categories", cascade = CascadeType.ALL)
-    private List<ServiceEntity> serviceEntities;
+    private Integer total;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private TeethEntity teethEntity;
+    private Integer paid;
 
-    private Boolean isServiced ;
+    private Boolean isPaid;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeethServiceEntity> teethServiceEntities = new ArrayList<>();
+
+    private Boolean isServiced;
 }

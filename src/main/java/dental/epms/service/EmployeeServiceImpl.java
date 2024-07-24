@@ -37,9 +37,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponseDto getEmpByID(Long empID) {
+
         return repository.findById(empID)
                 .map(mapper::toDto)
-                .get();
+                .orElse(null);
+    }
+
+    @Override
+    public Employees getByID(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -73,5 +79,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    @Override
+    public EmployeeResponseDto toDto(Employees employees) {
 
+        return mapper.toDto(employees);
+    }
 }

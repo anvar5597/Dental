@@ -1,5 +1,10 @@
 package dental.teeth.service;
 
+import dental.patientHistory.dto.TeethServiceDto;
+import dental.patientHistory.entity.PatientHistoryEntity;
+import dental.patientHistory.entity.TeethServiceEntity;
+import dental.patientHistory.entity.TeethServiceKey;
+import dental.serviceCategory.entity.ServiceEntity;
 import dental.teeth.dto.TeethRequestDto;
 import dental.teeth.dto.TeethResponseDto;
 import dental.teeth.entity.TeethEntity;
@@ -40,6 +45,11 @@ public class    TeethServiceImpl implements TeethService {
     }
 
     @Override
+    public TeethEntity getTeethById(Long id     ) {
+        return repository.findById(id).get();
+    }
+
+    @Override
     public Long create(TeethRequestDto dto) {
 
         return Optional.ofNullable(dto)
@@ -63,4 +73,13 @@ public class    TeethServiceImpl implements TeethService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public TeethResponseDto toDto(TeethEntity entity) {
+        return mapper.toDto(entity);
+    }
+
+
+
+
 }

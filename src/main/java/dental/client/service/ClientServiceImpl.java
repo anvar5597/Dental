@@ -6,12 +6,15 @@
  */
 
 
-package dental.client.Service;
+package dental.client.service;
 
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
+import dental.client.entity.Client;
 import dental.client.mapper.ClientMapper;
 import dental.client.repository.ClientRepository;
+import dental.utils.DefaultResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,16 +42,27 @@ public class ClientServiceImpl implements ClientService{
     public ClientResponseDto getByID(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .get();
+                .orElse(null);
+    }
+
+    @Override
+    public Client getClientByID(Long id) {
+        Optional<Client> optionalClient = repository.findById(id);
+        if (optionalClient.isEmpty()){
+            throw new EntityNotFoundException("Bunday" + id + " raqamli mijoz mavjud emas");
+        }
+
+        return optionalClient.get();
+
     }
 
     @Override
     public ClientResponseDto create(ClientRequestDto dto) {
         return Optional.ofNullable(dto)
                 .map(mapper::toClient)
-                 .map(repository::save)
+                .map(repository::save)
                 .map(mapper::toDto)
-                .get();
+                .orElse(null);
 
     }
 
@@ -58,11 +72,29 @@ public class ClientServiceImpl implements ClientService{
                 .flatMap(repository::findById)
                 .map(entity -> mapper.update(entity, dto))
                 .map(repository::save)
-                .map(mapper::toDto).get();
+                .map(mapper::toDto).orElse(null);
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public DefaultResponseDto delete(Long id) {
+        Optional<Client> optionalClient = repository.findById(id);
+        if (optionalClient.isEmpty()){
+            return DefaultResponseDto.builder()
+                    .status(400)
+                    .message("Bunday id raqamli mijoz yo`q")
+                    .build();
+        }
+        Client client = optionalClient.get();
+        client.setDeleted(true);
+        repository.save(client);
+        return DefaultResponseDto.builder()
+                .status(200)
+                .message("Mijoz o`chirildi")
+                .build();
+    }
+
+    @Override
+    public ClientResponseDto toDto(Client client) {
+        return mapper.toDto(client);
     }
 }

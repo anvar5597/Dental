@@ -1,14 +1,20 @@
 package dental.serviceCategory.service;
 
+import dental.patientHistory.dto.TeethServiceDto;
+import dental.patientHistory.entity.PatientHistoryEntity;
+import dental.patientHistory.entity.TeethServiceEntity;
+import dental.patientHistory.entity.TeethServiceKey;
 import dental.serviceCategory.dto.ServiceRequestDto;
 import dental.serviceCategory.dto.ServiceRespondDto;
 import dental.serviceCategory.entity.ServiceEntity;
 import dental.serviceCategory.mapper.ServiceMapper;
 import dental.serviceCategory.repository.ServiceRepository;
+import dental.teeth.service.TeethService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +29,8 @@ public class TServiceImpl implements TService {
 
     private final ServiceMapper mapper;
 
+    private final TeethService teethService;
+
     @Override
     public List<ServiceRespondDto> findAll() {
         return repository.findAll()
@@ -36,6 +44,15 @@ public class TServiceImpl implements TService {
         return repository.findById(id)
                 .map(mapper::toServiceRespondDto)
                 .get();
+    }
+
+    @Override
+    public List<ServiceEntity> findAllService(List<Long> ids) {
+        return ids.stream()
+                .map(repository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
 
     @Override
@@ -62,4 +79,17 @@ public class TServiceImpl implements TService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public ServiceRespondDto toDto(ServiceEntity entity) {
+        return mapper.toServiceRespondDto(entity);
+    }
+
+    @Override
+    public ServiceEntity getEntityById(Long serviceId) {
+        return repository.findById(serviceId).get();
+    }
+
+
+
 }

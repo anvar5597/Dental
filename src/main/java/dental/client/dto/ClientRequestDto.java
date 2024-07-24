@@ -8,6 +8,9 @@
 
 package dental.client.dto;
 
+import dental.client.entity.Gender;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,6 +23,9 @@ public class ClientRequestDto {
     private String  lastName;
 
     private String patronymic;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private LocalDate birthday;
 

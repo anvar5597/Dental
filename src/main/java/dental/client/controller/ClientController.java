@@ -3,6 +3,7 @@ package dental.client.controller;
 
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
+import dental.utils.DefaultResponseDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,6 @@ public interface ClientController {
     ClientResponseDto update(@RequestBody ClientRequestDto dto, @PathVariable Long id);
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Long id);
+    DefaultResponseDto delete(@PathVariable Long id);
 
 }

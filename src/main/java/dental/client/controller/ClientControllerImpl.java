@@ -8,9 +8,10 @@
 
 package dental.client.controller;
 
-import dental.client.Service.ClientService;
+import dental.client.service.ClientService;
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
+import dental.utils.DefaultResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +43,7 @@ public class ClientControllerImpl implements ClientController{
     }
 
     @Override
-    public void delete(Long id) {
-        service.delete(id);
+    public DefaultResponseDto delete(Long id) {
+        return  service.delete(id);
     }
 }

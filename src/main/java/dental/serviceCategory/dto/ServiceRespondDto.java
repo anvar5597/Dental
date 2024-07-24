@@ -8,7 +8,7 @@ import lombok.Data;
 public class ServiceRespondDto {
 
     @NotBlank
-    Long id;
+    private Long id;
     @NotBlank
     private String serviceName;
     @NotNull

@@ -10,6 +10,7 @@ package dental.patientHistory.dto;
 
 import dental.client.entity.Client;
 import dental.epms.entity.Employees;
+import dental.patientHistory.entity.TeethServiceEntity;
 import dental.serviceCategory.entity.ServiceEntity;
 import dental.teeth.entity.TeethEntity;
 import lombok.Data;
@@ -20,15 +21,13 @@ import java.util.List;
 @Data
 public class PatientRequestDto {
 
-    private Employees employees;
+    private Long employeeId;
 
-    private Client client;
+    private Long clientId;
 
     private LocalDate createdAt;
 
-    private List<ServiceEntity> serviceEntities;
-
-    private TeethEntity teethEntity;
+    private List<TeethServiceDto> teethServiceDtoList;
 
     private Boolean isServiced ;
 }

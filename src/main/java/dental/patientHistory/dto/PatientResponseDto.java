@@ -8,10 +8,11 @@
 
 package dental.patientHistory.dto;
 
-import dental.client.entity.Client;
-import dental.epms.entity.Employees;
-import dental.serviceCategory.entity.ServiceEntity;
-import dental.teeth.entity.TeethEntity;
+import dental.client.dto.ClientResponseDto;
+import dental.epms.dto.EmployeeResponseDto;
+import dental.patientHistory.entity.TeethServiceEntity;
+import dental.serviceCategory.dto.ServiceRespondDto;
+import dental.teeth.dto.TeethResponseDto;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -21,15 +22,15 @@ import java.util.List;
 public class PatientResponseDto {
     private Long id;
 
-    private Employees employees;
+    private EmployeeResponseDto employeeResponseDto;
 
-    private Client client;
+    private ClientResponseDto clientResponseDto;
 
     private LocalDate createdAt;
 
-    private List<ServiceEntity> serviceEntities;
+    private List<TeethServiceEntity> teethServiceEntities;
 
-    private TeethEntity teethEntity;
+//    private TeethResponseDto teethDto;
 
-    private Boolean isServiced;
+    private Boolean isServiced ;
 }
