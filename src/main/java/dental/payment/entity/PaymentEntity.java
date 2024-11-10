@@ -8,14 +8,19 @@
 
 package dental.payment.entity;
 
-import dental.patientHistory.entity.PatientHistoryEntity;
+import dental.patient_history.entity.PatientHistoryEntity;
+import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
+@SQLDelete(sql = "UPDATE patient SET  deleted = true WHERE id =?")
+@SQLRestriction("deleted <> 'true'")
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +34,6 @@ public class PaymentEntity {
 
     private LocalDate paidDate;
 
+    private Boolean deleted;
 
 }

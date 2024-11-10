@@ -33,7 +33,7 @@ public class ClientControllerImpl implements ClientController{
     }
 
     @Override
-    public ClientResponseDto create(ClientRequestDto dto) {
+    public DefaultResponseDto create(ClientRequestDto dto) {
         return service.create(dto);
     }
 

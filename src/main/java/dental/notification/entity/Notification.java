@@ -13,7 +13,7 @@ import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @Data
 @Table(name = TableName.NOTIFICATION)
 @SQLDelete(sql = "UPDATE notification SET  deleted = true WHERE id =?")
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted <> 'true'")
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

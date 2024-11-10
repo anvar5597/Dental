@@ -15,6 +15,7 @@ import lombok.Data;
 @Builder
 public class DefaultResponseDto {
 
-    public Integer status;
+    private Long doctorId;
+    private Integer status;
     private String message;
 }

@@ -4,7 +4,7 @@ import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @Table(name = TableName.CLIENTS)
 @SQLDelete(sql = "UPDATE clients SET  deleted = true WHERE id =?")
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted <> 'true'")
 public class Client {
 
     @Id
@@ -21,7 +21,7 @@ public class Client {
 
     private String name;
 
-    private String  lastName;
+    private String lastName;
 
     private String patronymic;
 

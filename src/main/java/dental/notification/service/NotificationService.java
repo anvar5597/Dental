@@ -3,25 +3,26 @@ package dental.notification.service;
 import dental.notification.dto.NotificationRequestDto;
 import dental.notification.dto.NotificationRespondDto;
 import dental.notification.entity.Notification;
-import dental.utils.DefaultResponseDto;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface NotificationService {
 
-    DefaultResponseDto create(NotificationRequestDto notificationRequestDto);
+    ResponseEntity<String> create(NotificationRequestDto notificationRequestDto);
 
     NotificationRespondDto toDto(Notification notification);
 
-    DefaultResponseDto update(NotificationRequestDto notificationRequestDto, Long id);
+    ResponseEntity<String> update(NotificationRequestDto notificationRequestDto, Long id);
 
-    NotificationRespondDto getById(Long id);
+    ResponseEntity<List<NotificationRespondDto>> findAll();
 
-    List<NotificationRespondDto> getByDate (LocalDate date);
+    ResponseEntity<NotificationRespondDto> getById(Long id);
 
-    List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end);
+    ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date);
 
-    DefaultResponseDto delete(Long id);
+    ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end);
 
+    ResponseEntity<String> delete(Long id);
 }

@@ -8,6 +8,7 @@
 
 package dental.payment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -26,6 +27,6 @@ public class PaymentResponseDto {
     private Integer debit;
 
     private Integer paid;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate paidDate;
 }

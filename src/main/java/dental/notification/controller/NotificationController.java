@@ -2,7 +2,7 @@ package dental.notification.controller;
 
 import dental.notification.dto.NotificationRequestDto;
 import dental.notification.dto.NotificationRespondDto;
-import dental.utils.DefaultResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -11,22 +11,25 @@ import java.util.List;
 @RequestMapping("/notification")
 public interface NotificationController {
     @PostMapping("/create")
-    DefaultResponseDto create(NotificationRequestDto notificationRequestDto);
+    ResponseEntity<String> create(NotificationRequestDto notificationRequestDto);
 
     @PutMapping("/update")
-    DefaultResponseDto update(NotificationRequestDto notificationRequestDto, Long id);
+    ResponseEntity<String> update(NotificationRequestDto notificationRequestDto, Long id);
 
     @GetMapping("/get/{id}")
-    NotificationRespondDto getById(@PathVariable Long id);
+    ResponseEntity<NotificationRespondDto> getById(@PathVariable Long id);
+
+    @GetMapping("/find-all")
+    ResponseEntity<List<NotificationRespondDto>> findAll();
 
     @GetMapping("/get-by-date")
-    List<NotificationRespondDto> getByDate(LocalDate date);
+    ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date);
 
     @GetMapping("/get-by-between-days")
-    List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end);
+    ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end);
 
     @DeleteMapping("/delete/{id}")
-    DefaultResponseDto delete(@PathVariable Long id);
+    ResponseEntity<String> delete(@PathVariable Long id);
 
 
 }

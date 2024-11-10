@@ -13,8 +13,8 @@ import dental.client.dto.ClientResponseDto;
 import dental.client.entity.Client;
 import dental.client.mapper.ClientMapper;
 import dental.client.repository.ClientRepository;
+import dental.exception.ResourceNotFoundException;
 import dental.utils.DefaultResponseDto;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +24,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
 
     private final ClientRepository repository;
 
     private final ClientMapper mapper;
+
     @Override
     public List<ClientResponseDto> findAll() {
         return repository.findAll()
@@ -48,21 +49,33 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public Client getClientByID(Long id) {
         Optional<Client> optionalClient = repository.findById(id);
-        if (optionalClient.isEmpty()){
-            throw new EntityNotFoundException("Bunday" + id + " raqamli mijoz mavjud emas");
+        if (optionalClient.isEmpty()) {
+            throw new ResourceNotFoundException("Bunday mijoz yo`q");
         }
-
         return optionalClient.get();
 
     }
 
     @Override
-    public ClientResponseDto create(ClientRequestDto dto) {
-        return Optional.ofNullable(dto)
+    public Client getByClientName(String name) {
+        return repository.findByName(name);
+    }
+
+    @Override
+    public DefaultResponseDto create(ClientRequestDto dto) {
+        Optional<Client> client = Optional.ofNullable(dto)
                 .map(mapper::toClient)
-                .map(repository::save)
-                .map(mapper::toDto)
-                .orElse(null);
+                .map(repository::save);
+
+        if (client.isEmpty()) {
+            return DefaultResponseDto.builder()
+                    .status(400)
+                    .message("Mijoz yaratishda xatolik yuz berdi").build();
+
+        }
+        return DefaultResponseDto.builder()
+                .status(200)
+                .message(client.get().getName() + " ismli mijoz yaratildi").build();
 
     }
 
@@ -78,7 +91,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public DefaultResponseDto delete(Long id) {
         Optional<Client> optionalClient = repository.findById(id);
-        if (optionalClient.isEmpty()){
+        if (optionalClient.isEmpty()) {
             return DefaultResponseDto.builder()
                     .status(400)
                     .message("Bunday id raqamli mijoz yo`q")

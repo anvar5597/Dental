@@ -8,14 +8,15 @@
 
 package dental.notification.service;
 
+import dental.client.entity.Client;
 import dental.client.service.ClientService;
 import dental.notification.dto.NotificationRequestDto;
 import dental.notification.dto.NotificationRespondDto;
 import dental.notification.entity.Notification;
 import dental.notification.repository.NotificationRepository;
-import dental.utils.DefaultResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,18 +32,19 @@ public class NotificationServiceImpl implements NotificationService {
     private final ClientService service;
 
     @Override
-    public DefaultResponseDto create(NotificationRequestDto notificationRequestDto) {
+    public ResponseEntity<String> create(NotificationRequestDto notificationRequestDto) {
 
         Notification notification = new Notification();
-        notification.setClient(service.getClientByID(notificationRequestDto.getClientId()));
+
+        Client client =service.getClientByID(notificationRequestDto.getClientId());
+        if (client == null){
+            return ResponseEntity.badRequest().body("Bunday mijoz yo`q");
+        }
+        notification.setClient(client);
         notification.setNextVisit(notificationRequestDto.getNextVisit());
 
         repository.save(notification);
-
-        return DefaultResponseDto.builder()
-                .status(200)
-                .message("Eslatma yaratildi")
-                .build();
+        return ResponseEntity.ok("Eslatma yaratildi");
     }
 
     @Override
@@ -59,32 +61,37 @@ public class NotificationServiceImpl implements NotificationService {
 
 
     @Override
-    public DefaultResponseDto update(NotificationRequestDto notificationRequestDto, Long id) {
+    public ResponseEntity<String> update(NotificationRequestDto notificationRequestDto, Long id) {
 
         Optional<Notification> optionalNotification = repository.findById(id);
         if (optionalNotification.isEmpty()) {
-            DefaultResponseDto.builder()
-                    .status(400)
-                    .message("Bunday estalma yo`q")
-                    .build();
+            return ResponseEntity.badRequest().body("Bunday " + id + " raqamli eslatma yo`q");
         }
-        if (optionalNotification.isPresent()) {
-            Notification notification = optionalNotification.get();
-            notification.setClient(service.getClientByID(notificationRequestDto.getClientId()));
-            notification.setNextVisit(notificationRequestDto.getNextVisit());
 
-            repository.save(notification);
+        Notification notification = optionalNotification.get();
+        Client client =service.getClientByID(notificationRequestDto.getClientId());
+        if (client == null){
+            return ResponseEntity.badRequest().body("Bunday mijoz yo`q");
         }
-        return DefaultResponseDto.builder()
-                .status(200)
-                .message("Sizning" + id + "-raqamli eslatmangiz o`zgartirildi")
-                .build();
+        notification.setClient(client);
+        notification.setNextVisit(notificationRequestDto.getNextVisit());
+
+        repository.save(notification);
+
+        return ResponseEntity.ok("Sizning" + id + "-raqamli eslatmangiz o`zgartirildi");
 
     }
 
+    @Override
+    public ResponseEntity<List<NotificationRespondDto>> findAll() {
+        return ResponseEntity.ok(repository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList());
+    }
 
     @Override
-    public NotificationRespondDto getById(Long id) {
+    public ResponseEntity<NotificationRespondDto> getById(Long id) {
 
         Notification notification;
         Optional<Notification> optionalNotification = repository.findById(id);
@@ -92,46 +99,43 @@ public class NotificationServiceImpl implements NotificationService {
             throw new EntityNotFoundException("Bunday " + id + " raqamli eslatma yo`q");
         }
         notification = optionalNotification.get();
-        return this.toDto(notification);
+        return ResponseEntity.ok(this.toDto(notification));
     }
 
-    @Override
-    public List<NotificationRespondDto> getByDate(LocalDate date) {
 
+    @Override
+    public ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date) {
         List<Notification> notifications = repository.findAllByNextVisit(date);
-        List<NotificationRespondDto> respondDtos = new ArrayList<>();
+        List<NotificationRespondDto> respondDto = new ArrayList<>();
         for (Notification notification : notifications) {
-            respondDtos.add(toDto(notification));
+            respondDto.add(toDto(notification));
         }
-        return respondDtos;
+        return ResponseEntity.ok(respondDto);
     }
 
     @Override
-    public List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end) {
+    public ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end) {
         List<Notification> notifications = repository.findAllByNextVisitBetween(start, end);
         List<NotificationRespondDto> respondDtos = new ArrayList<>();
         for (Notification notification : notifications) {
             respondDtos.add(toDto(notification));
         }
-        return respondDtos;
+        return ResponseEntity.ok(respondDtos);
     }
 
     @Override
-    public DefaultResponseDto delete(Long id) {
+    public ResponseEntity<String> delete(Long id) {
 
         Optional<Notification> optionalNotification = repository.findById(id);
 
-        if (optionalNotification.isEmpty()){
-            throw new EntityNotFoundException("Bunday " + id + " raqamli eslatma yo`q");
+        if (optionalNotification.isEmpty()) {
+            return ResponseEntity.badRequest().body("Bunday " + id + " raqamli eslatma yo`q");
         }
 
         Notification notification = optionalNotification.get();
         notification.setDeleted(true);
         repository.save(notification);
-        return DefaultResponseDto.builder()
-                .status(200)
-                .message("Eslatma o`chirildi")
-                .build();
+        return ResponseEntity.ok("Mijoz o`chirildi");
     }
 
 

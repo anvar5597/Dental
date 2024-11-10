@@ -1,10 +1,5 @@
 package dental.teeth.service;
 
-import dental.patientHistory.dto.TeethServiceDto;
-import dental.patientHistory.entity.PatientHistoryEntity;
-import dental.patientHistory.entity.TeethServiceEntity;
-import dental.patientHistory.entity.TeethServiceKey;
-import dental.serviceCategory.entity.ServiceEntity;
 import dental.teeth.dto.TeethRequestDto;
 import dental.teeth.dto.TeethResponseDto;
 import dental.teeth.entity.TeethEntity;
@@ -34,9 +29,6 @@ public class    TeethServiceImpl implements TeethService {
 
     @Override
     public TeethResponseDto getById(Long id) {
-//        return Optional.ofNullable(id)
-//                .flatMap(repository::findById)
-//                .map(mapper::toDto);
             return Optional.ofNullable(id)
                     .flatMap(repository::findById)
                     .map(mapper::toDto)
@@ -45,7 +37,7 @@ public class    TeethServiceImpl implements TeethService {
     }
 
     @Override
-    public TeethEntity getTeethById(Long id     ) {
+    public TeethEntity getTeethById(Long id) {
         return repository.findById(id).get();
     }
 

@@ -14,8 +14,11 @@ public interface ClientService {
 
     Client getClientByID(Long id);
 
-    ClientResponseDto create(ClientRequestDto dto);
-    ClientResponseDto update(ClientRequestDto dto , Long id);
+    Client getByClientName(String name);
+
+    DefaultResponseDto create(ClientRequestDto dto);
+
+    ClientResponseDto update(ClientRequestDto dto, Long id);
 
     DefaultResponseDto delete(Long id);
 

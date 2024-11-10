@@ -1,5 +1,6 @@
 package dental.epms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dental.epms.entity.ERole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class EmployeeResponseDto {
     @NotBlank
     private ERole role;
     @NotBlank
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDay;
     @NotBlank
     private String phoneNumber;

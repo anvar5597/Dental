@@ -19,7 +19,7 @@ public interface ClientController {
     ClientResponseDto getOne(@PathVariable Long id);
 
     @PostMapping
-    ClientResponseDto create(@RequestBody ClientRequestDto dto);
+    DefaultResponseDto create(@RequestBody ClientRequestDto dto);
     @PutMapping("/{id}")
     ClientResponseDto update(@RequestBody ClientRequestDto dto, @PathVariable Long id);
 

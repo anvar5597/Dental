@@ -8,6 +8,8 @@
 
 package dental.client.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dental.client.entity.Gender;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +30,7 @@ public class ClientResponseDto {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING  , pattern = "dd/MM/yyyy")
     private LocalDate birthday;
 
     private String phoneNumber;

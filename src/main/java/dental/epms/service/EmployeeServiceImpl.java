@@ -6,6 +6,7 @@ import dental.epms.entity.ERole;
 import dental.epms.entity.Employees;
 import dental.epms.mapper.EmployeeMapper;
 import dental.epms.repository.EmployeeRepository;
+import dental.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,7 +46,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employees getByID(Long id) {
-        return repository.findById(id).orElse(null);
+        Optional<Employees> employees = repository.findById(id);
+        if (employees.isEmpty()){
+            throw new ResourceNotFoundException("Bunday doctor yo`q");
+        }
+        return employees.get();
     }
 
     @Override

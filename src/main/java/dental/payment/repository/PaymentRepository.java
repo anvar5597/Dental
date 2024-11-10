@@ -13,4 +13,10 @@ import java.util.List;
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     List<PaymentEntity> findAllByPaidDateBetween(LocalDate from, LocalDate to);
+
+    List<PaymentEntity> findAllByPaidDate(LocalDate date);
+
+    List<PaymentEntity> findAllByPatientHistoryEntityClient_Id(Long id);
+
+    List<PaymentEntity> findAllByPatientHistoryEntityEmployees_Id(Long id);
 }
