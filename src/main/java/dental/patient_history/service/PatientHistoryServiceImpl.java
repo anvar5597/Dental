@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,17 +52,21 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
     @Override
     public List<PatientResponseDto> findAll() {
-        return repository.findAll()
+        List<PatientResponseDto> dto = new ArrayList<>(repository.findAll()
                 .stream()
                 .map(this::toDto)
-                .toList();
+                .toList());
+        dto.sort(Comparator.comparing(PatientResponseDto::getPatientLName));
+        return dto;
     }
 
     public List<PatientShortInfoDto> findAllShort() {
-        return repository.findAll()
+        List<PatientShortInfoDto> dto = new ArrayList<>(repository.findAll()
                 .stream()
                 .map(this::toShortDto)
-                .toList();
+                .toList());
+        dto.sort(Comparator.comparing(PatientShortInfoDto::getPatientLName));
+        return dto;
     }
 
 
@@ -157,16 +162,9 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
         Employees doctor = employeeService.getByID(dto.getEmployeeId());
         Client client = clientService.getClientByID(dto.getClientId());
-        Boolean isTaken = repository.existsByEmployeesAndAppointmentTimeBetweenOrEndTimeBetweenOrAndAppointmentTimeLessThanAndEndTimeGreaterThan(
-                doctor,
-                dto.getAppointmentTime(), dto.getEndTime(),
-                dto.getAppointmentTime(), dto.getEndTime(),
-                dto.getAppointmentTime(), dto.getEndTime()
-        );
 
-        if (Boolean.TRUE.equals(isTaken)) {
-            throw new AppointmentTimeNotAvailableException("Bu tashrif allaqachon band qilingan");
-        }
+        boolean isTaken = false;
+
         PatientHistoryEntity patientHistoryEntity = new PatientHistoryEntity();
         patientHistoryEntity.setCreatedAt(LocalDate.now());
         patientHistoryEntity.setEmployees(doctor);
@@ -178,6 +176,42 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         patientHistoryEntity.setClient(client);
         patientHistoryEntity.setAppointmentTime(dto.getAppointmentTime());
         patientHistoryEntity.setEndTime(dto.getEndTime());
+
+        if (patientHistoryEntity.getAppointmentTime().isAfter(patientHistoryEntity.getEndTime())
+                || patientHistoryEntity.getAppointmentTime().isEqual(patientHistoryEntity.getEndTime())) {
+            throw new AppointmentTimeNotAvailableException("Vaqtni noto`g`ri tanlagansiz");
+        }
+
+        List<PatientHistoryEntity> entities = repository.findAll().stream().toList();
+        for (PatientHistoryEntity entity : entities) {
+            if (entity.getDeleted().equals(false)
+                    && (patientHistoryEntity.getEmployees().getId().equals(entity.getEmployees().getId())
+                    || patientHistoryEntity.getClient().getId().equals(entity.getClient().getId()))
+                    && ((patientHistoryEntity.getAppointmentTime().isEqual(entity.getAppointmentTime())
+                    && patientHistoryEntity.getEndTime().isEqual(entity.getEndTime()))
+                    || (patientHistoryEntity.getAppointmentTime().isBefore(entity.getAppointmentTime())
+                    && patientHistoryEntity.getEndTime().isAfter(entity.getEndTime()))
+                    || (patientHistoryEntity.getAppointmentTime().isBefore(entity.getAppointmentTime())
+                    && patientHistoryEntity.getEndTime().isAfter(entity.getAppointmentTime()))
+                    || (patientHistoryEntity.getAppointmentTime().isBefore(entity.getEndTime())
+                    && patientHistoryEntity.getEndTime().isAfter(entity.getEndTime()))
+                    || (patientHistoryEntity.getAppointmentTime().isAfter(entity.getAppointmentTime())
+                    && patientHistoryEntity.getEndTime().isBefore(entity.getEndTime()))
+                    || (patientHistoryEntity.getAppointmentTime().isEqual(entity.getAppointmentTime())
+                    && patientHistoryEntity.getEndTime().isBefore(entity.getEndTime()))
+                    || (patientHistoryEntity.getEndTime().isEqual(entity.getEndTime())
+                    && patientHistoryEntity.getAppointmentTime().isAfter(entity.getAppointmentTime())))) {
+                isTaken = true;
+                break;
+            }
+
+
+        }
+        if (isTaken) {
+            throw new AppointmentTimeNotAvailableException("Bu tashrif allaqachon band qilingan");
+        }
+
+
         repository.save(patientHistoryEntity);
         return "Tashrif yaratildi";
     }

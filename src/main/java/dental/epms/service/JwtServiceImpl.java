@@ -6,7 +6,6 @@ import dental.epms.entity.JwtTokenEntity;
 import dental.epms.repository.JwtTokenRepo;
 import dental.epms.repository.EmployeeRepository;
 import dental.exception.ResourceNotFoundException;
-import dental.utils.DefaultResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -105,5 +104,15 @@ public class JwtServiceImpl implements JwtService {
        JwtTokenEntity jwtTokenEntity = optionalJwtTokenEntity.get();
 
        return jwtTokenEntity.getId();
+    }
+
+    @Override
+    public String returnRoleByToken(String token) {
+        Optional<JwtTokenEntity> optionalJwtTokenEntity=jwtTokenRepo.findByToken(token);
+        if (optionalJwtTokenEntity.isEmpty()){
+            throw new ResourceNotFoundException("Bunday token yo`q");
+        }
+        JwtTokenEntity jwtTokenEntity = optionalJwtTokenEntity.get();
+        return jwtTokenEntity.getUser().getRole().toString();
     }
 }

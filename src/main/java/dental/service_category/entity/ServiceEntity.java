@@ -1,6 +1,5 @@
 package dental.service_category.entity;
 
-import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

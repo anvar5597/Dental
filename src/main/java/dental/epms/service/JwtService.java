@@ -10,4 +10,6 @@ public interface JwtService {
     void deleteByUserId(Long userId);
 
     Long returnIdByToken(String token);
+    String returnRoleByToken(String token);
+
 }

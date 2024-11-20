@@ -17,6 +17,7 @@ import java.util.*;
 @Entity
 @Setter
 @Getter
+@ToString
 @Table(name = TableName.EMPLOYEES,
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "login"),
