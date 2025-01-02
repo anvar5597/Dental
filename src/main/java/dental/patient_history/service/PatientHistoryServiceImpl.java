@@ -10,6 +10,7 @@ package dental.patient_history.service;
 
 import dental.client.service.ClientServiceImpl;
 import dental.client.entity.Client;
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.epms.entity.Employees;
 import dental.epms.service.EmployeeServiceImpl;
 import dental.epms.service.JwtServiceImpl;
@@ -19,7 +20,6 @@ import dental.patient_history.dto.*;
 import dental.patient_history.entity.PatientHistoryEntity;
 import dental.patient_history.mapper.PatientHistoryMapper;
 import dental.patient_history.repository.PatientHistoryRepository;
-import dental.payment.dto.PaymentResponseDto;
 import dental.utils.DefaultResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -153,7 +153,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     }
 
     @Override
-    public Long findDoctorId(String token) {
+    public EmployeeShortInfoDto findDoctorId(String token) {
         return jwtService.returnIdByToken(token);
     }
 

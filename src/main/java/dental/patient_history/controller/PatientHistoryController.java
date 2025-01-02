@@ -1,6 +1,7 @@
 package dental.patient_history.controller;
 
 
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.patient_history.dto.*;
 import dental.utils.DefaultResponseDto;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,9 @@ public interface PatientHistoryController {
     @PostMapping("/create")
     ResponseEntity<String> create(@RequestBody PatientAddDto dto);
 
+
     @GetMapping("/find-by-token")
-    ResponseEntity<Long> findIdByToken(String token);
+    ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token);
 
 
     @PutMapping("/add-service")

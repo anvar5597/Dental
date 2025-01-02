@@ -38,26 +38,26 @@ public class NotificationControllerImpl implements NotificationController {
 
     @Override
     public ResponseEntity<NotificationRespondDto> getById(Long id) {
-        return service.getById(id);
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @Override
     public ResponseEntity<List<NotificationRespondDto>> findAll() {
-        return service.findAll();
+        return ResponseEntity.ok(service.findAll());
     }
 
     @Override
     public ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date) {
-        return service.getByDate(date);
+        return ResponseEntity.ok(service.getByDate(date));
     }
 
     @Override
     public ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end) {
-        return service.getBetweenDate(start, end);
+        return ResponseEntity.ok(service.getBetweenDate(start, end));
     }
 
     @Override
     public ResponseEntity<String> delete(Long id) {
-        return service.delete(id);
+        return ResponseEntity.ok(service.delete(id));
     }
 }

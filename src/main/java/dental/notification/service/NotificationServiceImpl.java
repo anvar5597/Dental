@@ -54,6 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
         dto.setId(notification.getId());
         dto.setClientName(notification.getClient().getName());
         dto.setClientLastName(notification.getClient().getLastName());
+        dto.setPhoneNumber(notification.getClient().getPhoneNumber());
         dto.setNextVisit(notification.getNextVisit());
 
         return dto;
@@ -83,15 +84,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ResponseEntity<List<NotificationRespondDto>> findAll() {
-        return ResponseEntity.ok(repository.findAll()
+    public List<NotificationRespondDto> findAll() {
+        return repository.findAll()
                 .stream()
                 .map(this::toDto)
-                .toList());
+                .toList();
     }
 
     @Override
-    public ResponseEntity<NotificationRespondDto> getById(Long id) {
+    public NotificationRespondDto getById(Long id) {
 
         Notification notification;
         Optional<Notification> optionalNotification = repository.findById(id);
@@ -99,43 +100,43 @@ public class NotificationServiceImpl implements NotificationService {
             throw new EntityNotFoundException("Bunday " + id + " raqamli eslatma yo`q");
         }
         notification = optionalNotification.get();
-        return ResponseEntity.ok(this.toDto(notification));
+        return this.toDto(notification);
     }
 
 
     @Override
-    public ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date) {
+    public List<NotificationRespondDto> getByDate(LocalDate date) {
         List<Notification> notifications = repository.findAllByNextVisit(date);
         List<NotificationRespondDto> respondDto = new ArrayList<>();
         for (Notification notification : notifications) {
             respondDto.add(toDto(notification));
         }
-        return ResponseEntity.ok(respondDto);
+        return respondDto;
     }
 
     @Override
-    public ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end) {
+    public List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end) {
         List<Notification> notifications = repository.findAllByNextVisitBetween(start, end);
         List<NotificationRespondDto> respondDtos = new ArrayList<>();
         for (Notification notification : notifications) {
             respondDtos.add(toDto(notification));
         }
-        return ResponseEntity.ok(respondDtos);
+        return respondDtos;
     }
 
     @Override
-    public ResponseEntity<String> delete(Long id) {
+    public String delete(Long id) {
 
         Optional<Notification> optionalNotification = repository.findById(id);
 
         if (optionalNotification.isEmpty()) {
-            return ResponseEntity.badRequest().body("Bunday " + id + " raqamli eslatma yo`q");
+            return "Bunday " + id + " raqamli eslatma yo`q";
         }
 
         Notification notification = optionalNotification.get();
         notification.setDeleted(true);
         repository.save(notification);
-        return ResponseEntity.ok("Mijoz o`chirildi");
+        return "Mijoz o`chirildi";
     }
 
 

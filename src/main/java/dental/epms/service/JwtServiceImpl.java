@@ -1,5 +1,6 @@
 package dental.epms.service;
 
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.epms.dto.LoginDto;
 import dental.epms.entity.Employees;
 import dental.epms.entity.JwtTokenEntity;
@@ -96,14 +97,26 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Long returnIdByToken(String token) {
+    public EmployeeShortInfoDto returnIdByToken(String token) {
        Optional<JwtTokenEntity> optionalJwtTokenEntity=jwtTokenRepo.findByToken(token);
        if (optionalJwtTokenEntity.isEmpty()){
            throw new ResourceNotFoundException("Bunday token yo`q");
        }
        JwtTokenEntity jwtTokenEntity = optionalJwtTokenEntity.get();
+       EmployeeShortInfoDto shortInfoDto = toDto(jwtTokenEntity);
 
-       return jwtTokenEntity.getId();
+       return shortInfoDto;
+    }
+
+    EmployeeShortInfoDto toDto(JwtTokenEntity entity){
+        EmployeeShortInfoDto dto = new EmployeeShortInfoDto();
+
+        dto.setId(entity.getUser().getId());
+        dto.setFirstName(entity.getUser().getFirstName());
+        dto.setLastName(entity.getUser().getLastName());
+        dto.setPatronymic(entity.getUser().getPatronymic());
+        dto.setRole(entity.getUser().getRole());
+        return dto;
     }
 
     @Override

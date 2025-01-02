@@ -19,6 +19,7 @@ public class NotificationRespondDto {
     private Long id;
     private String clientName;
     private String clientLastName;
+    private String phoneNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate nextVisit;

@@ -16,13 +16,13 @@ public interface NotificationService {
 
     ResponseEntity<String> update(NotificationRequestDto notificationRequestDto, Long id);
 
-    ResponseEntity<List<NotificationRespondDto>> findAll();
+    List<NotificationRespondDto> findAll();
 
-    ResponseEntity<NotificationRespondDto> getById(Long id);
+    NotificationRespondDto getById(Long id);
 
-    ResponseEntity<List<NotificationRespondDto>> getByDate(LocalDate date);
+    List<NotificationRespondDto> getByDate(LocalDate date);
 
-    ResponseEntity<List<NotificationRespondDto>> getBetweenDate(LocalDate start, LocalDate end);
+    List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end);
 
-    ResponseEntity<String> delete(Long id);
+    String delete(Long id);
 }

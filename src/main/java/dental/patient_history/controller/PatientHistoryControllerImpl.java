@@ -8,6 +8,7 @@
 
 package dental.patient_history.controller;
 
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.patient_history.dto.*;
 import dental.patient_history.service.PatientHistoryServiceImpl;
 import dental.utils.DefaultResponseDto;
@@ -49,7 +50,7 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
-    public ResponseEntity<Long> findIdByToken(String token) {
+    public ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token) {
         return ResponseEntity.ok(patientHistoryService.findDoctorId(token));
     }
 

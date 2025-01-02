@@ -1,5 +1,6 @@
 package dental.epms.service;
 
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.epms.dto.LoginDto;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,7 +10,7 @@ public interface JwtService {
     boolean isTokenValid(String token, UserDetails userDetails);
     void deleteByUserId(Long userId);
 
-    Long returnIdByToken(String token);
+    EmployeeShortInfoDto returnIdByToken(String token);
     String returnRoleByToken(String token);
 
 }

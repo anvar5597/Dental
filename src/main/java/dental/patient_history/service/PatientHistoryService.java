@@ -1,5 +1,6 @@
 package dental.patient_history.service;
 
+import dental.epms.dto.EmployeeShortInfoDto;
 import dental.patient_history.dto.*;
 import dental.patient_history.entity.PatientHistoryEntity;
 import dental.payment.dto.PaymentResponseDto;
@@ -22,7 +23,7 @@ public interface PatientHistoryService {
 
     void save(PatientHistoryEntity entity);
 
-    Long findDoctorId(String token);
+    EmployeeShortInfoDto findDoctorId(String token);
     String create(@org.jetbrains.annotations.NotNull PatientAddDto dto);
 
     String serviced(Long id);

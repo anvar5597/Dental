@@ -33,6 +33,10 @@ public class WebConfig {
         configuration.addAllowedOrigin("http://185.177.59.64:5173");
         configuration.addAllowedOrigin("https://www.3dclinic.uz");
         configuration.addAllowedOrigin("http://www.3dclinic.uz");
+        configuration.addAllowedOrigin("https://stom-project.netlify.app/");
+        configuration.addAllowedOrigin("http://stom-project.netlify.app/");
+        configuration.addAllowedOrigin("https://stom-project.vercel.app/");
+        configuration.addAllowedOrigin("http://stom-project.vercel.app/");
         configuration.addAllowedOrigin("https://3dclinic.uz");
         configuration.addAllowedOrigin("http://3dclinic.uz");
         configuration.setAllowedMethods(Arrays.asList(
