@@ -12,9 +12,17 @@ public interface TeethService {
 
     TeethResponseDto getById(Long id);
 
+    TeethEntity getTeethById(Long id);
+
     Long create(TeethRequestDto dto);
 
     TeethEntity update(TeethRequestDto dto, Long id);
 
     void delete(Long id);
+
+    TeethResponseDto toDto(TeethEntity entity);
+
+
+
+
 }

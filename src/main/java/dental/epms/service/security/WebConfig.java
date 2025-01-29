@@ -26,15 +26,19 @@ public class WebConfig {
                 HttpHeaders.ACCEPT,
                 HttpHeaders.CONTENT_TYPE
         ));
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://85.217.171.113");
-        configuration.addAllowedOrigin("http://85.217.171.113");
-        configuration.addAllowedOrigin("https://85.217.171.113:3000");
-        configuration.addAllowedOrigin("http://85.217.171.113:3000");
-        configuration.addAllowedOrigin("https://www.ishbizda.com");
-        configuration.addAllowedOrigin("http://www.ishbizda.com");
-        configuration.addAllowedOrigin("https://ishbizda.com");
-        configuration.addAllowedOrigin("http://ishbizda.com");
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("https://185.177.59.64");
+        configuration.addAllowedOrigin("http://185.177.59.64");
+        configuration.addAllowedOrigin("https://185.177.59.64:5173");
+        configuration.addAllowedOrigin("http://185.177.59.64:5173");
+        configuration.addAllowedOrigin("https://www.3dclinic.uz");
+        configuration.addAllowedOrigin("http://www.3dclinic.uz");
+        configuration.addAllowedOrigin("https://stom-project.netlify.app/");
+        configuration.addAllowedOrigin("http://stom-project.netlify.app/");
+        configuration.addAllowedOrigin("https://stom-project.vercel.app/");
+        configuration.addAllowedOrigin("http://stom-project.vercel.app/");
+        configuration.addAllowedOrigin("https://3dclinic.uz");
+        configuration.addAllowedOrigin("http://3dclinic.uz");
         configuration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),

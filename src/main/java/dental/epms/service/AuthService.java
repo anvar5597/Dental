@@ -1,11 +1,11 @@
 package dental.epms.service;
 
 import dental.epms.dto.EmployeeRequestDto;
-import dental.epms.dto.EmployeeResponseDto;
 import dental.epms.dto.LoginDto;
+import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
-    public String login(LoginDto loginDto);
+    ResponseEntity<String> login(LoginDto loginDto);
 
-    EmployeeResponseDto create(EmployeeRequestDto dto);
+    ResponseEntity<String> create(EmployeeRequestDto dto);
 }

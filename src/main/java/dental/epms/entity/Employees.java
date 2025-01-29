@@ -1,5 +1,7 @@
 package dental.epms.entity;
 
+import dental.patient_history.entity.PatientHistoryEntity;
+import dental.utils.TableName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +17,8 @@ import java.util.*;
 @Entity
 @Setter
 @Getter
-@Table(name = "employees",
+@ToString
+@Table(name = TableName.EMPLOYEES,
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "login"),
                 @UniqueConstraint(columnNames = "email")})
@@ -52,6 +55,9 @@ public class Employees implements UserDetails {
     private String phoneNumber;
 
     private String address;
+
+    @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL)
+    private List<PatientHistoryEntity> entities = new ArrayList<>();
 
 
     @Enumerated(EnumType.STRING)

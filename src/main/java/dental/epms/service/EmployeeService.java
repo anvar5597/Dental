@@ -13,6 +13,11 @@ public interface EmployeeService {
 
     EmployeeResponseDto getEmpByID(Long empID);
 
+    Employees getByID(Long id);
+
+    EmployeeResponseDto toDto(Employees employees);
+
+
     List<EmployeeResponseDto> getAllDoctors();
 
     Employees update(EmployeeRequestDto dto, Long id);

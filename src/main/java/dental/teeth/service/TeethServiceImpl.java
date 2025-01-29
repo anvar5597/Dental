@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TeethServiceImpl implements TeethService {
+public class    TeethServiceImpl implements TeethService {
 
     private final TeethRepository repository;
     private final TeethMapper mapper;
@@ -29,14 +29,16 @@ public class TeethServiceImpl implements TeethService {
 
     @Override
     public TeethResponseDto getById(Long id) {
-//        return Optional.ofNullable(id)
-//                .flatMap(repository::findById)
-//                .map(mapper::toDto);
             return Optional.ofNullable(id)
                     .flatMap(repository::findById)
                     .map(mapper::toDto)
                     .get();
 
+    }
+
+    @Override
+    public TeethEntity getTeethById(Long id) {
+        return repository.findById(id).get();
     }
 
     @Override
@@ -63,4 +65,13 @@ public class TeethServiceImpl implements TeethService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public TeethResponseDto toDto(TeethEntity entity) {
+        return mapper.toDto(entity);
+    }
+
+
+
+
 }

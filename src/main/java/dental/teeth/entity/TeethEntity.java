@@ -16,4 +16,7 @@ public class TeethEntity {
     private Long id;
 
     private String teethName;
+
+
+
 }
