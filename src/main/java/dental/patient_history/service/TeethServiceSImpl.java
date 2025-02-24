@@ -40,6 +40,8 @@ public class TeethServiceSImpl implements TeethServiceS {
         PatientHistoryEntity entity = repository.findById(dto.getPatientId()).get();
         Integer total = entity.getTotal();
         entity.setTotal(Integer.sum(total,service.getEntityById(dto.getServiceId()).getPrice()));
+        entity.getClient().setDebt(Integer.sum(entity.getClient().getDebt(),total));
+        entity.setExpense(Integer.sum(entity.getExpense(),service.getEntityById((dto.getServiceId())).getExpense()));
         TeethServiceKey teethServiceKey = new TeethServiceKey();
         teethServiceKey.setService(service.getEntityById(dto.getServiceId()));
         teethServiceKey.setTeeth(teethService.getTeethById(dto.getTeethId()));

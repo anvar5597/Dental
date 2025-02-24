@@ -24,8 +24,9 @@ public class ServiceControllerImpl implements ServiceController{
     }
 
     @Override
-    public ServiceRespondDto create(ServiceRequestDto dto) {
-        return teethService.create(dto);
+    public String create(ServiceRequestDto dto) {
+        teethService.create(dto);
+        return "Servis yaratildi";
     }
 
     @Override

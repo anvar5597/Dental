@@ -20,6 +20,8 @@ public class TableName {
     public static final String TEETH = "teeth";
     public static final String ANALYSES = "analyses";
     public static final String X_REY = "x_rey";
+    public static final String X_RAY = "x_ray";
+
 
 
 

@@ -36,4 +36,6 @@ public class Client {
 
     private Boolean deleted = false;
 
+    private Integer debt = 0;
+
 }

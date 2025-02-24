@@ -14,6 +14,8 @@ import dental.client.entity.Client;
 import dental.client.mapper.ClientMapper;
 import dental.client.repository.ClientRepository;
 import dental.exception.ResourceNotFoundException;
+//import dental.patient_history.entity.PatientHistoryEntity;
+import dental.patient_history.service.PatientHistoryService;
 import dental.utils.DefaultResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository repository;
 
     private final ClientMapper mapper;
+
 
     @Override
     public List<ClientResponseDto> findAll() {

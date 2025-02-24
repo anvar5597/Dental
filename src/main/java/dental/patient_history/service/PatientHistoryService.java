@@ -1,9 +1,9 @@
 package dental.patient_history.service;
 
+import dental.client.entity.Client;
 import dental.epms.dto.EmployeeShortInfoDto;
 import dental.patient_history.dto.*;
 import dental.patient_history.entity.PatientHistoryEntity;
-import dental.payment.dto.PaymentResponseDto;
 import dental.utils.DefaultResponseDto;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,5 +33,10 @@ public interface PatientHistoryService {
     public PatientShortInfoDto toShortDto(@NotNull PatientHistoryEntity entity);
     String update(PatientRequestDto dto, Long id);
 
+    Boolean hasClient(Client client);
     String delete(Long id);
+
+    void deleteWithEmployee(Long id);
+
+    void deleteWithClient(Long id);
 }

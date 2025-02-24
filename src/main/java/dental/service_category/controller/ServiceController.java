@@ -18,7 +18,7 @@ public interface ServiceController {
 
 
     @PostMapping
-    ServiceRespondDto create(@RequestBody ServiceRequestDto dto);
+    String create(@RequestBody ServiceRequestDto dto);
 
 
     @PutMapping("/{id}")

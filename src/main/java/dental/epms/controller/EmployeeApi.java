@@ -18,10 +18,11 @@ public interface EmployeeApi {
     EmployeeResponseDto findEmpByID(@PathVariable  Long id);
 
     @GetMapping("/doctors")
-  List<EmployeeResponseDto>  getAllDoctors();
+    List<EmployeeResponseDto>  getAllDoctors();
 
     @PutMapping("/{id}")
     void update(@RequestBody EmployeeRequestDto entity , @PathVariable Long id);
+
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id );

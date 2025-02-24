@@ -8,8 +8,8 @@
 
 package dental.patient_history.service;
 
-import dental.client.service.ClientServiceImpl;
 import dental.client.entity.Client;
+import dental.client.service.ClientServiceImpl;
 import dental.epms.dto.EmployeeShortInfoDto;
 import dental.epms.entity.Employees;
 import dental.epms.service.EmployeeServiceImpl;
@@ -27,12 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -54,7 +50,9 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     public List<PatientResponseDto> findAll() {
         List<PatientResponseDto> dto = new ArrayList<>(repository.findAll()
                 .stream()
+                .filter(Objects::nonNull)
                 .map(this::toDto)
+                .filter(Objects::nonNull)
                 .toList());
         dto.sort(Comparator.comparing(PatientResponseDto::getPatientLName));
         return dto;
@@ -70,7 +68,13 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     }
 
 
-    public PatientResponseDto toDto(@NotNull PatientHistoryEntity entity) {
+    public PatientResponseDto toDto(PatientHistoryEntity entity) {
+
+        if (entity == null) {
+            return new PatientResponseDto();
+        }
+
+
         PatientResponseDto responseDto = new PatientResponseDto();
         responseDto.setId(entity.getId());
         responseDto.setEmpName(entity.getEmployees().getFirstName());
@@ -78,10 +82,11 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         responseDto.setPatientName(entity.getClient().getName());
         responseDto.setPatientLName(entity.getClient().getLastName());
         responseDto.setPhoneNumber(entity.getClient().getPhoneNumber());
-        responseDto.setIsServiced(entity.getIsServiced());
         responseDto.setGender(entity.getClient().getGender());
         responseDto.setBirthDay(entity.getClient().getBirthday());
+        responseDto.setIsServiced(entity.getIsServiced());
         responseDto.setTeethServiceEntities(getServiceListDto(entity));
+        responseDto.setExpense(entity.getExpense());
         responseDto.setCreatedAt(entity.getCreatedAt());
         return responseDto;
     }
@@ -94,6 +99,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         shortInfoDto.setPatientLName(entity.getClient().getLastName());
         shortInfoDto.setBirthday(entity.getClient().getBirthday());
         shortInfoDto.setGender(entity.getClient().getGender());
+
         List<TServiceListDto> tServiceListDto = getServiceListDto(entity);
         shortInfoDto.setTeethServiceEntities(tServiceListDto);
         shortInfoDto.setIsServiced(entity.getIsServiced());
@@ -109,6 +115,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         }
         return tServiceListDto;
     }
+
 
     @NotNull
     private static TServiceListDto getServiceListDto(@NotNull PatientHistoryEntity entity, int i) {
@@ -250,6 +257,20 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     }
 
     @Override
+    public Boolean hasClient(Client client) {
+        boolean hasId = false;
+        List<PatientHistoryEntity> optionalList = repository.findAll();
+        for (PatientHistoryEntity patientHistory : optionalList) {
+            if (patientHistory.getClient().equals(client)) {
+                hasId = true;
+                break;
+            }
+        }
+        return hasId;
+    }
+
+
+    @Override
     public String delete(Long id) {
         Optional<PatientHistoryEntity> patientHistoryEntity = repository.findById(id);
         if (patientHistoryEntity.isEmpty()) {
@@ -258,6 +279,26 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
         patientHistoryEntity.get().setDeleted(true);
         return "id" + " raqamli tashrif o`chirildi";
+    }
+
+    @Override
+    public void deleteWithEmployee(Long id) {
+        List<PatientHistoryEntity> patientHistoryEntities = repository.findAll();
+        for (PatientHistoryEntity entity : patientHistoryEntities){
+            if(entity.getEmployees().getId().equals(id)){
+                entity.setDeleted(true);
+            }
+        }
+    }
+
+    @Override
+    public void deleteWithClient(Long id) {
+       List<PatientHistoryEntity> optionalList = repository.findAll();
+       for (PatientHistoryEntity entity : optionalList){
+           if (Objects.equals(entity.getClient().getId(), id)){
+               entity.setDeleted(true);
+           }
+       }
     }
 }
 

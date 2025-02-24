@@ -125,6 +125,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public void deleteWithClient(Long id) {
+        List<Notification> notificationList = repository.findAll();
+        for(Notification notification : notificationList){
+            if (notification.getClient().getId().equals(id)){
+                notification.setDeleted(true);
+            }
+        }
+    }
+
+    @Override
     public String delete(Long id) {
 
         Optional<Notification> optionalNotification = repository.findById(id);

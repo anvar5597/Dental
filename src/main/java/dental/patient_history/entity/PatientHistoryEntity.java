@@ -8,9 +8,12 @@
 
 package dental.patient_history.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dental.client.entity.Client;
 import dental.epms.entity.Employees;
+
+import dental.patient_history.xrey.entity.XRayEntity;
 import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,8 +40,9 @@ public class PatientHistoryEntity {
     @JoinColumn(name = "doctor_id")
     private Employees employees;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     private LocalDate createdAt;
@@ -51,12 +55,16 @@ public class PatientHistoryEntity {
 
     private Integer paid;
 
+    private Integer expense;
+
     private Boolean isPaid;
     @JsonManagedReference
     @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeethServiceEntity> teethServiceEntities = new ArrayList<>();
 
     private Boolean isServiced;
+    @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL)
+    private List<XRayEntity> xrayImages;
 
     private Boolean deleted;
 }
