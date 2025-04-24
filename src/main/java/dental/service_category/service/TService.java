@@ -17,6 +17,8 @@ public interface TService {
 
     ServiceRespondDto update(ServiceRequestDto dto, Long id);
 
+    Integer countService();
+
     void delete(Long id);
 
     ServiceRespondDto  toDto(ServiceEntity entity);

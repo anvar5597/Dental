@@ -28,5 +28,7 @@ public interface PaymentService {
 
     PaymentResponseDto toDto(PaymentEntity entity);
 
+    void deleteWithEmployee(Long id);
+    void deleteWithClient(Long id);
     void  delete(Long id);
 }

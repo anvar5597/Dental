@@ -13,7 +13,7 @@ import dental.patient_history.dto.PatientServiceAddDto;
 import dental.patient_history.entity.PatientHistoryEntity;
 import dental.patient_history.entity.TeethServiceEntity;
 import dental.patient_history.entity.TeethServiceKey;
-import dental.patient_history.repository.PatientHistoryRepository;
+import dental.patient_history.repository.PatientRepository;
 import dental.patient_history.repository.TeethServiceRepo;
 import dental.service_category.service.TServiceImpl;
 import dental.teeth.service.TeethServiceImpl;
@@ -32,7 +32,7 @@ public class TeethServiceSImpl implements TeethServiceS {
 
     private final TServiceImpl service;
 
-    private final PatientHistoryRepository repository;
+    private final PatientRepository repository;
 
     @Override
     public DefaultResponseDto createTeethServiceForPatientHistory(PatientServiceAddDto dto) {
@@ -40,6 +40,8 @@ public class TeethServiceSImpl implements TeethServiceS {
         PatientHistoryEntity entity = repository.findById(dto.getPatientId()).get();
         Integer total = entity.getTotal();
         entity.setTotal(Integer.sum(total,service.getEntityById(dto.getServiceId()).getPrice()));
+        entity.getClient().setDebt(Integer.sum(entity.getClient().getDebt(),total));
+        entity.setExpense(Integer.sum(entity.getExpense(),service.getEntityById((dto.getServiceId())).getExpense()));
         TeethServiceKey teethServiceKey = new TeethServiceKey();
         teethServiceKey.setService(service.getEntityById(dto.getServiceId()));
         teethServiceKey.setTeeth(teethService.getTeethById(dto.getTeethId()));

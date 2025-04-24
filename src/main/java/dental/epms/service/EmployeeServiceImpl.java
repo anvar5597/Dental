@@ -89,4 +89,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return mapper.toDto(employees);
     }
+
+    @Override
+    public Integer countEmployee() {
+
+        List<Employees> employees = repository.findAllByRole(ERole.ROLE_USER);
+        return employees.size();
+    }
 }

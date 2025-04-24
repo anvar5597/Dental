@@ -1,12 +1,14 @@
 package dental.epms.service;
 
 
+import dental.epms.dto.AuthDto;
 import dental.epms.dto.EmployeeRequestDto;
 
 import dental.epms.dto.LoginDto;
 import dental.epms.entity.Employees;
 import dental.epms.repository.EmployeeRepository;
 import dental.epms.repository.JwtTokenRepo;
+import dental.exception.UnauthorizedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +33,13 @@ public class AuthServiceImpl  implements  AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<String> login(LoginDto loginDto) {
+    public AuthDto login(LoginDto loginDto) {
 
         var employeee = Optional.ofNullable(loginDto)
                 .map(LoginDto::getLogin)
                 .map(this::findEmployeeByLogin);
 
-        if(employeee.isEmpty()) return ResponseEntity.status(401).body("Login yoki parol xato");
+        if(employeee.isEmpty()) throw  new UnauthorizedException("Login yoki parol xato");
         var employee = employeee.get();
         try {
             authenticationManager.authenticate(
@@ -45,12 +47,18 @@ public class AuthServiceImpl  implements  AuthService {
         }
         catch (Exception e) {
           log.error("Invalid username {} or password {}", loginDto.getLogin(), loginDto.getPassword());
-           return ResponseEntity.status(401).body("Login yoki parol xato");
+           throw new UnauthorizedException("Login yoki parol xato");
         }
 
         jwtTokenRepo.deleteByApiTypeAndUser(loginDto.getApiType(), employee);
+        AuthDto authDto=new AuthDto();
+        authDto.setId(employee.getId());
+        authDto.setLastName(employeee.get().getLastName());
+        authDto.setFirstName(employee.getFirstName());
+        authDto.setRole(employeee.get().getRole());
+        authDto.setToken(jwtService.generateToken(employee, loginDto));
 
-        return ResponseEntity.ok(jwtService.generateToken(employee, loginDto));
+        return authDto;
     }
 
     @Override

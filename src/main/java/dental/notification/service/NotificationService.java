@@ -24,5 +24,6 @@ public interface NotificationService {
 
     List<NotificationRespondDto> getBetweenDate(LocalDate start, LocalDate end);
 
+    void deleteWithClient(Long id);
     String delete(Long id);
 }

@@ -2,6 +2,7 @@ package dental.epms.controller;
 
 import dental.epms.dto.EmployeeRequestDto;
 import dental.epms.dto.EmployeeResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,10 +19,14 @@ public interface EmployeeApi {
     EmployeeResponseDto findEmpByID(@PathVariable  Long id);
 
     @GetMapping("/doctors")
-  List<EmployeeResponseDto>  getAllDoctors();
+    List<EmployeeResponseDto>  getAllDoctors();
+
+    @GetMapping("/count-doctor")
+    ResponseEntity<Integer> countEmployee();
 
     @PutMapping("/{id}")
     void update(@RequestBody EmployeeRequestDto entity , @PathVariable Long id);
+
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id );

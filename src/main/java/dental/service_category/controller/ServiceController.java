@@ -3,6 +3,7 @@ package dental.service_category.controller;
 
 import dental.service_category.dto.ServiceRequestDto;
 import dental.service_category.dto.ServiceRespondDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,11 @@ public interface ServiceController {
     @GetMapping("/{id}")
     ServiceRespondDto getById(@PathVariable Long id);
 
+    @GetMapping("/count-services")
+    ResponseEntity<Integer> countServices();
 
     @PostMapping
-    ServiceRespondDto create(@RequestBody ServiceRequestDto dto);
+    String create(@RequestBody ServiceRequestDto dto);
 
 
     @PutMapping("/{id}")

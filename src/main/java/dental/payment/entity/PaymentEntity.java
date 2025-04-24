@@ -19,6 +19,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name = TableName.PAYMENT)
 @SQLDelete(sql = "UPDATE patient SET  deleted = true WHERE id =?")
 @SQLRestriction("deleted <> 'true'")
 public class PaymentEntity {

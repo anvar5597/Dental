@@ -1,6 +1,7 @@
 package dental.epms.controller;
 
 
+import dental.epms.dto.AuthDto;
 import dental.epms.dto.EmployeeRequestDto;
 import dental.epms.dto.LoginDto;
 import dental.epms.service.AuthService;
@@ -23,8 +24,8 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto) {
-        return authService.login(loginDto);
+    ResponseEntity<AuthDto> login(@Valid @RequestBody LoginDto loginDto) {
+        return ResponseEntity.ok(authService.login(loginDto));
     }
 
     @PostMapping("/create")

@@ -34,5 +34,7 @@ public class PatientResponseDto {
 
     private List<TServiceListDto> teethServiceEntities;
 
+    private Integer expense;
+
     private Boolean isServiced ;
 }

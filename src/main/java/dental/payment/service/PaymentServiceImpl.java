@@ -45,6 +45,10 @@ public class PaymentServiceImpl implements PaymentService {
         paymentEntity.setPaidValue(dto.getPaidValue());
         paymentEntity.setPatientHistoryEntity(patientHistory);
         paymentEntity.setPaidDate(LocalDate.now());
+/*
+        paymentEntity.getPatientHistoryEntity().getClient().setDebt(
+                paymentEntity.getPatientHistoryEntity().getClient().getDebt()-dto.getPaidValue());
+*/
         paymentEntity.setDeleted(false);
         repository.save(paymentEntity);
 
@@ -52,6 +56,8 @@ public class PaymentServiceImpl implements PaymentService {
         Integer paid = patientHistory.getPaid() + dto.getPaidValue();
         patientHistory.setPaid(paid);
 
+        paymentEntity.getPatientHistoryEntity().getClient().setDebt(
+                paymentEntity.getPatientHistoryEntity().getClient().getDebt()-paid);
         if (total <= paid) {
             patientHistory.setIsPaid(true);
         }
@@ -219,6 +225,26 @@ public class PaymentServiceImpl implements PaymentService {
         responseDto.setDebit(entity.getPatientHistoryEntity().getTotal() - entity.getPatientHistoryEntity().getPaid());
         responseDto.setPaidDate(entity.getPaidDate());
         return responseDto;
+    }
+
+    @Override
+    public void deleteWithEmployee(Long id) {
+        List<PaymentEntity> paymentEntities = repository.findAll();
+        for (PaymentEntity entity : paymentEntities){
+            if(entity.getPatientHistoryEntity().getEmployees().getId().equals(id)){
+                entity.setDeleted(true);
+            }
+        }
+    }
+
+    @Override
+    public void deleteWithClient(Long id) {
+        List<PaymentEntity> paymentEntities = repository.findAll();
+        for (PaymentEntity entity : paymentEntities){
+            if(entity.getPatientHistoryEntity().getClient().getId().equals(id)){
+                entity.setDeleted(true);
+            }
+        }
     }
 
     @Override

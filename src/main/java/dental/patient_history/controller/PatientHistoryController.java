@@ -27,7 +27,19 @@ public interface PatientHistoryController {
     @PostMapping("/create")
     ResponseEntity<String> create(@RequestBody PatientAddDto dto);
 
+    @GetMapping("/clients-not-serviced")
+    Integer countClientNotServiced();
+    @GetMapping("/clients-serviced")
+    Integer countClientServiced();
 
+    @GetMapping("/clients")
+    Integer countClient();
+
+    @GetMapping("/monthly-appointments")
+    public List<MonthlyCountDTO> getMonthlyAppointmentCount();
+
+    @GetMapping("/monthly-income-expense")
+    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee() ;
     @GetMapping("/find-by-token")
     ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token);
 

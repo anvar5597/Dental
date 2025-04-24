@@ -31,6 +31,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientMapper mapper;
 
+
     @Override
     public List<ClientResponseDto> findAll() {
         return repository.findAll()
@@ -86,6 +87,20 @@ public class ClientServiceImpl implements ClientService {
                 .map(entity -> mapper.update(entity, dto))
                 .map(repository::save)
                 .map(mapper::toDto).orElse(null);
+    }
+
+    @Override
+    public Integer countClient() {
+        List<Client> clients = repository.findAll();
+        return clients.size();
+    }
+
+    @Override
+    public List<ClientResponseDto> findDeleted() {
+        return repository.findByDeletedTrue()
+                .stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     @Override

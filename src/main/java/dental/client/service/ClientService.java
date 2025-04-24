@@ -20,6 +20,10 @@ public interface ClientService {
 
     ClientResponseDto update(ClientRequestDto dto, Long id);
 
+    Integer countClient();
+
+    List<ClientResponseDto> findDeleted();
+
     DefaultResponseDto delete(Long id);
 
     ClientResponseDto toDto(Client client);

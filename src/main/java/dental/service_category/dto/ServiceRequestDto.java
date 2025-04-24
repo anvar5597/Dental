@@ -10,4 +10,6 @@ public class ServiceRequestDto {
     private String serviceName;
     @NotNull
     private Integer price;
+    @NotNull
+    private Integer expense;
 }
