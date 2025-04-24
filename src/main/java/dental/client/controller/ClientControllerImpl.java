@@ -16,6 +16,7 @@ import dental.patient_history.service.PatientHistoryService;
 import dental.payment.service.PaymentService;
 import dental.utils.DefaultResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,6 +37,18 @@ public class ClientControllerImpl implements ClientController{
     @Override
     public ClientResponseDto getOne(Long id) {
         return service.getByID(id);
+    }
+
+    @Override
+    public ResponseEntity<Integer> countClient() {
+
+        return ResponseEntity.ok(service.countClient());
+    }
+
+    @Override
+    public ResponseEntity<List<ClientResponseDto>> findDeleted() {
+
+        return ResponseEntity.ok(service.findDeleted());
     }
 
     @Override

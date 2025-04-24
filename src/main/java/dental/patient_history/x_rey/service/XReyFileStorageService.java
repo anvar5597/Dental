@@ -2,7 +2,7 @@ package dental.patient_history.x_rey.service;
 
 
 import dental.patient_history.entity.PatientHistoryEntity;
-import dental.patient_history.repository.PatientHistoryRepository;
+import dental.patient_history.repository.PatientRepository;
 import dental.patient_history.x_rey.entity.XReyFileStorage;
 import dental.patient_history.x_rey.entity.XreyStatus;
 import dental.patient_history.x_rey.repository.XReyFileStorageRepository;
@@ -24,14 +24,14 @@ import java.util.Optional;
 public class XReyFileStorageService {
 
     private final XReyFileStorageRepository xRayFileStorageRepository;
-    private final PatientHistoryRepository repository;
+    private final PatientRepository repository;
 
     @Value("${upload.xfolder}")
     private String uploadFolder;
 
     private final Hashids hashids;
 
-    public XReyFileStorageService(XReyFileStorageRepository xRayFileStorageRepository, PatientHistoryRepository repository) {
+    public XReyFileStorageService(XReyFileStorageRepository xRayFileStorageRepository, PatientRepository repository) {
         this.xRayFileStorageRepository = xRayFileStorageRepository;
         this.repository = repository;
         this.hashids = new Hashids(getClass().getName(), 6);

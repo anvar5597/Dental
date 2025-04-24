@@ -6,6 +6,7 @@ import dental.epms.service.EmployeeServiceImpl;
 import dental.patient_history.service.PatientHistoryService;
 import dental.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,12 @@ public class EmployeeController implements EmployeeApi {
     @Override
     public List<EmployeeResponseDto> getAllDoctors() {
         return employeeService.getAllDoctors();
+    }
+
+    @Override
+    public ResponseEntity<Integer> countEmployee() {
+
+        return ResponseEntity.ok(employeeService.countEmployee());
     }
 
     @Override

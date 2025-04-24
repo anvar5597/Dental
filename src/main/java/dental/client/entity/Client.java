@@ -1,5 +1,6 @@
 package dental.client.entity;
 
+import dental.client.analys.entity.ClientXRayEntity;
 import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,6 +37,8 @@ public class Client {
     private String address;
 
     private Boolean deleted = false;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<ClientXRayEntity> xrayImages;
 
     private Integer debt = 0;
 

@@ -52,6 +52,7 @@ public class AuthServiceImpl  implements  AuthService {
 
         jwtTokenRepo.deleteByApiTypeAndUser(loginDto.getApiType(), employee);
         AuthDto authDto=new AuthDto();
+        authDto.setId(employee.getId());
         authDto.setLastName(employeee.get().getLastName());
         authDto.setFirstName(employee.getFirstName());
         authDto.setRole(employeee.get().getRole());

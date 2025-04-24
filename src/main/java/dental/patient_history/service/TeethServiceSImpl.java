@@ -13,7 +13,7 @@ import dental.patient_history.dto.PatientServiceAddDto;
 import dental.patient_history.entity.PatientHistoryEntity;
 import dental.patient_history.entity.TeethServiceEntity;
 import dental.patient_history.entity.TeethServiceKey;
-import dental.patient_history.repository.PatientHistoryRepository;
+import dental.patient_history.repository.PatientRepository;
 import dental.patient_history.repository.TeethServiceRepo;
 import dental.service_category.service.TServiceImpl;
 import dental.teeth.service.TeethServiceImpl;
@@ -32,7 +32,7 @@ public class TeethServiceSImpl implements TeethServiceS {
 
     private final TServiceImpl service;
 
-    private final PatientHistoryRepository repository;
+    private final PatientRepository repository;
 
     @Override
     public DefaultResponseDto createTeethServiceForPatientHistory(PatientServiceAddDto dto) {

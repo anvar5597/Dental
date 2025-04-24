@@ -1,9 +1,11 @@
-package dental.patient_history.xrey.service;
+package dental.client.analys.service;
 
-import dental.patient_history.entity.PatientHistoryEntity;
+import dental.client.analys.entity.ClientXRayEntity;
+import dental.client.analys.repository.CliedtXRayRepository;
+import dental.client.entity.Client;
+import dental.client.repository.ClientRepository;
 import dental.patient_history.repository.PatientRepository;
-import dental.patient_history.xrey.entity.XRayEntity;
-import dental.patient_history.xrey.repository.XRayRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,24 +20,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class XRayService {
+public class ClientXRayService {
 
     @Value("${file.store.path}")
     private String uploadDir;
-    private final XRayRepository xrayRepository;
+    private final CliedtXRayRepository xrayRepository;
 
-    private final PatientRepository patientHistoryRepository;
+    private final ClientRepository clientRepository;
 
     private static final List<String> ALLOWED_FILE_TYPES = Arrays.asList("application/pdf", "image/png", "image/jpeg", "image/jpg");
 
-    public XRayService(XRayRepository xrayRepository, PatientRepository patientHistoryRepository) {
+    public ClientXRayService(CliedtXRayRepository xrayRepository, ClientRepository clientRepository) {
         this.xrayRepository = xrayRepository;
-        this.patientHistoryRepository = patientHistoryRepository;
+        this.clientRepository = clientRepository;
     }
 
-    public XRayEntity saveXRay(MultipartFile file, Long patientHistoryId) throws IOException {
-        Optional<PatientHistoryEntity> optionalPatientHistory = patientHistoryRepository.findById(patientHistoryId);
-        if (optionalPatientHistory.isEmpty()) {
+    public ClientXRayEntity saveXRay(MultipartFile file, Long clientId) throws IOException {
+        @NotNull Optional<Client> clientXRay = clientRepository.findById(clientId);
+        if (clientXRay.isEmpty()) {
             throw new RuntimeException("Bemor tarixi topilmadi!");
         }
 
@@ -49,15 +51,15 @@ public class XRayService {
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
         // Fayl ma’lumotlarini bazaga saqlash
-        XRayEntity xrayEntity = new XRayEntity();
+        ClientXRayEntity xrayEntity = new ClientXRayEntity();
         xrayEntity.setFileName(file.getOriginalFilename());
         xrayEntity.setFilePath(filePath);
-        xrayEntity.setPatientHistory(optionalPatientHistory.get());
+        xrayEntity.setClient(clientXRay.get());
         return xrayRepository.save(xrayEntity);
     }
 
     public byte[] getXRayFile(Long id) throws IOException {
-        Optional<XRayEntity> xray = xrayRepository.findById(id);
+        Optional<ClientXRayEntity> xray = xrayRepository.findById(id);
         if (xray.isPresent()) {
             Path filePath = Paths.get(xray.get().getFilePath());
             return Files.readAllBytes(filePath);
@@ -66,7 +68,7 @@ public class XRayService {
     }
 
     public void deleteXRay(Long id) throws IOException {
-        Optional<XRayEntity> xray = xrayRepository.findById(id);
+        Optional<ClientXRayEntity> xray = xrayRepository.findById(id);
         if (xray.isPresent()) {
             Files.deleteIfExists(Paths.get(xray.get().getFilePath())); // Faylni serverdan o‘chirish
             xrayRepository.deleteById(id);

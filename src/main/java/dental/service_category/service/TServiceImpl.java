@@ -71,6 +71,13 @@ public class TServiceImpl implements TService {
     }
 
     @Override
+    public Integer countService() {
+
+        List<ServiceEntity> entities = repository.findAll();
+        return entities.size();
+    }
+
+    @Override
     public void delete(Long id) {
         repository.deleteById(id);
     }

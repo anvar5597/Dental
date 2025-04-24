@@ -4,6 +4,7 @@ package dental.client.controller;
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
 import dental.utils.DefaultResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,12 @@ public interface ClientController {
 
     @GetMapping("/{id}")
     ClientResponseDto getOne(@PathVariable Long id);
+
+    @GetMapping("/count-client")
+    ResponseEntity<Integer> countClient();
+
+    @GetMapping("/deleted")
+    ResponseEntity<List<ClientResponseDto>> findDeleted();
 
     @PostMapping
     DefaultResponseDto create(@RequestBody ClientRequestDto dto);

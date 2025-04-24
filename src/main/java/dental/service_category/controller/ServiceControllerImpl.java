@@ -4,6 +4,7 @@ import dental.service_category.dto.ServiceRequestDto;
 import dental.service_category.dto.ServiceRespondDto;
 import dental.service_category.service.TService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class ServiceControllerImpl implements ServiceController{
     @Override
     public ServiceRespondDto getById(Long id) {
         return teethService.getById(id);
+    }
+
+    @Override
+    public ResponseEntity<Integer> countServices() {
+        return ResponseEntity.ok(teethService.countService());
     }
 
     @Override

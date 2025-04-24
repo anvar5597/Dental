@@ -23,6 +23,13 @@ public interface PatientHistoryService {
 
     void save(PatientHistoryEntity entity);
 
+    Integer countClientNotServiced();
+
+    List<MonthlyCountDTO> getMonthlyAppointmentCount();
+
+    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
+
+    Integer countClientServiced();
     EmployeeShortInfoDto findDoctorId(String token);
     String create(@org.jetbrains.annotations.NotNull PatientAddDto dto);
 

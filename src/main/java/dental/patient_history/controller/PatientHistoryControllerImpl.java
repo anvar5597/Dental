@@ -50,6 +50,31 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
+    public Integer countClientNotServiced() {
+        return patientHistoryService.countClientNotServiced();
+    }
+
+    @Override
+    public Integer countClientServiced() {
+        return patientHistoryService.countClientServiced();
+    }
+
+    @Override
+    public Integer countClient() {
+        return (patientHistoryService.countClientServiced() + patientHistoryService.countClientNotServiced());
+    }
+
+    @Override
+    public List<MonthlyCountDTO> getMonthlyAppointmentCount() {
+        return patientHistoryService.getMonthlyAppointmentCount();
+    }
+
+    @Override
+    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee() {
+        return patientHistoryService.getMonthlyIncomeAndExpensePerEmployee();
+    }
+
+    @Override
     public ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token) {
         return ResponseEntity.ok(patientHistoryService.findDoctorId(token));
     }

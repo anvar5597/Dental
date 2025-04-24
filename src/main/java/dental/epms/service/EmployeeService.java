@@ -17,6 +17,7 @@ public interface EmployeeService {
 
     EmployeeResponseDto toDto(Employees employees);
 
+    Integer countEmployee();
 
     List<EmployeeResponseDto> getAllDoctors();
 
