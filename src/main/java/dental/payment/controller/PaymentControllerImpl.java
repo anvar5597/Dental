@@ -41,6 +41,11 @@ public class PaymentControllerImpl implements PaymentController {
     }
 
     @Override
+    public ResponseEntity<List<PaymentResponseDto>> findAllByDept() {
+        return ResponseEntity.ok(service.paymentByDebt());
+    }
+
+    @Override
     public ResponseEntity<List<PaymentResponseDto>> payByDate(LocalDate date) {
         return ResponseEntity.ok(service.paymentDate(date));
     }

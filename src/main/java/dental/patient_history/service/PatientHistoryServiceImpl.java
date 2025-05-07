@@ -54,6 +54,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         patientHistoryEntity.setEmployees(doctor);
         patientHistoryEntity.setPaid(0);
         patientHistoryEntity.setTotal(0);
+        patientHistoryEntity.setExpense(0);
         patientHistoryEntity.setIsPaid(false);
         patientHistoryEntity.setIsServiced(false);
         patientHistoryEntity.setDeleted(false);
@@ -167,10 +168,30 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
     }
 
+
+
+    @Override
+    public List<PatientResponseDto> findByClientId(Long id) {
+        return repository.findByClient_Id(id)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     @Override
     public PatientHistoryEntity getPatientById(Long id) {
 
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<PatientResponseDto> findDebitPatient() {
+        return repository.findAll()
+                .stream()
+                .filter(debit->!debit.getIsPaid())
+                .filter(PatientHistoryEntity::getIsServiced)
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
@@ -315,15 +336,32 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
            }
        }
     }
+    public PatientResponseDto toDtoService(PatientHistoryEntity entity) {
 
+        if (entity == null) {
+            return new PatientResponseDto();
+        }
+        PatientResponseDto responseDto = new PatientResponseDto();
+        responseDto.setId(entity.getId());
+        responseDto.setEmpName(entity.getEmployees().getFirstName());
+        responseDto.setEmpLName(entity.getEmployees().getLastName());
+        responseDto.setPatientName(entity.getClient().getName());
+        responseDto.setPatientLName(entity.getClient().getLastName());
+        responseDto.setPhoneNumber(entity.getClient().getPhoneNumber());
+        responseDto.setGender(entity.getClient().getGender());
+        responseDto.setBirthDay(entity.getClient().getBirthday());
+        responseDto.setIsServiced(entity.getIsServiced());
+        responseDto.setTeethServiceEntities(getServiceListDto(entity));
+        responseDto.setExpense(entity.getExpense());
+        responseDto.setCreatedAt(entity.getCreatedAt());
+        return responseDto;
+    }
 
     public PatientResponseDto toDto(PatientHistoryEntity entity) {
 
         if (entity == null) {
             return new PatientResponseDto();
         }
-
-
         PatientResponseDto responseDto = new PatientResponseDto();
         responseDto.setId(entity.getId());
         responseDto.setEmpName(entity.getEmployees().getFirstName());

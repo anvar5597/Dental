@@ -17,6 +17,9 @@ public interface PatientRepository extends JpaRepository<PatientHistoryEntity, L
 
     List<PatientHistoryEntity> findByEmployeesId(Long id);
 
+
+    List<PatientHistoryEntity> findByClient_Id(Long id);
+
     @NotNull Optional<PatientHistoryEntity> findById(@NotNull Long id);
 
     Boolean existsByEmployeesAndAppointmentTimeBetweenOrEndTimeBetweenOrAndAppointmentTimeLessThanAndEndTimeGreaterThan(

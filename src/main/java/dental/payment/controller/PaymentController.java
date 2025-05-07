@@ -21,6 +21,8 @@ public interface PaymentController {
 
     @GetMapping("/find-all")
     ResponseEntity<List<PaymentResponseDto>> findAll();
+    @GetMapping("/find-all-debt")
+    ResponseEntity<List<PaymentResponseDto>> findAllByDept();
 
     @GetMapping("/date")
     ResponseEntity<List<PaymentResponseDto>> payByDate( LocalDate date);

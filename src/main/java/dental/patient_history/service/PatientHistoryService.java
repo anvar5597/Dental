@@ -17,7 +17,11 @@ public interface PatientHistoryService {
 
     List<PatientResponseDto> findByEmpId(Long id);
 
+    List<PatientResponseDto>findByClientId(Long id);
+
     PatientHistoryEntity getPatientById(Long id);
+
+    List<PatientResponseDto> findDebitPatient();
 
     PatientResponseDto findById(Long id);
 

@@ -16,6 +16,8 @@ public interface PaymentService {
     String update(PaymentRequestDto dto, Long id);
 
     List<PaymentResponseDto> findAll();
+    List<PaymentResponseDto> paymentByDebt();
+
     List<PaymentResponseDto> paymentsByClient(Long id);
 
     List<PaymentResponseDto> paymentDate(LocalDate date);

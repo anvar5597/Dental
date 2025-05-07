@@ -45,10 +45,6 @@ public class PaymentServiceImpl implements PaymentService {
         paymentEntity.setPaidValue(dto.getPaidValue());
         paymentEntity.setPatientHistoryEntity(patientHistory);
         paymentEntity.setPaidDate(LocalDate.now());
-/*
-        paymentEntity.getPatientHistoryEntity().getClient().setDebt(
-                paymentEntity.getPatientHistoryEntity().getClient().getDebt()-dto.getPaidValue());
-*/
         paymentEntity.setDeleted(false);
         repository.save(paymentEntity);
 
@@ -94,6 +90,15 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentResponseDto> findAll() {
         return repository.findAll()
                 .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<PaymentResponseDto> paymentByDebt() {
+        return repository.findAll()
+                .stream()
+                .filter(payment -> !payment.getPatientHistoryEntity().getIsPaid())
                 .map(this::toDto)
                 .toList();
     }

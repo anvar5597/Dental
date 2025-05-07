@@ -55,7 +55,7 @@ public class PatientHistoryEntity {
 
     private Integer paid;
 
-    private Integer expense;
+    private Integer expense ;
 
     private Boolean isPaid;
     @JsonManagedReference
