@@ -36,6 +36,11 @@ public class ServiceControllerImpl implements ServiceController{
     }
 
     @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        return ResponseEntity.ok(teethService.activeDelete(id));
+    }
+
+    @Override
     public ServiceRespondDto update(ServiceRequestDto dto, Long id) {
         return teethService.update(dto,id);
     }

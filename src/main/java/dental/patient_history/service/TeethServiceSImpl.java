@@ -38,6 +38,7 @@ public class TeethServiceSImpl implements TeethServiceS {
     public DefaultResponseDto createTeethServiceForPatientHistory(PatientServiceAddDto dto) {
 
         PatientHistoryEntity entity = repository.findById(dto.getPatientId()).get();
+        if (Boolean.TRUE.equals(entity.getIsServiced())) throw new IllegalArgumentException("Hizmat qo`shib bo`lmaydi");
         Integer total = entity.getTotal();
         entity.setTotal(Integer.sum(total,service.getEntityById(dto.getServiceId()).getPrice()));
         entity.getClient().setDebt(Integer.sum(entity.getClient().getDebt(),total));

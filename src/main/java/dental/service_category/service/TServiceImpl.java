@@ -1,5 +1,6 @@
 package dental.service_category.service;
 
+import dental.exception.ResourceNotFoundException;
 import dental.service_category.dto.ServiceRequestDto;
 import dental.service_category.dto.ServiceRespondDto;
 import dental.service_category.entity.ServiceEntity;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,7 @@ public class TServiceImpl implements TService {
     public List<ServiceRespondDto> findAll() {
         return repository.findAll()
                 .stream()
+                .filter(ServiceEntity::getActive)
                 .map(mapper::toServiceRespondDto)
                 .toList();
     }
@@ -37,6 +40,7 @@ public class TServiceImpl implements TService {
     @Override
     public ServiceRespondDto getById(Long id) {
         return repository.findById(id)
+                .filter(ServiceEntity::getActive)
                 .map(mapper::toServiceRespondDto)
                 .get();
     }
@@ -47,27 +51,42 @@ public class TServiceImpl implements TService {
                 .map(repository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .filter(ServiceEntity::getActive)
                 .toList();
     }
 
     @Override
     public ServiceRespondDto create(ServiceRequestDto dto) {
-        Optional.ofNullable(dto)
+        return Optional.ofNullable(dto)
                 .map(mapper::toEntity)
-                .map(repository::save);
-        ServiceEntity service = mapper.toEntity(dto);
-        return mapper.toServiceRespondDto(service);
+                .map(entity -> {
+                    entity.setCreatedAt(LocalDateTime.now());
+                    return repository.save(entity);
+                })
+                .map(mapper::toServiceRespondDto)
+                .orElseThrow(() -> new IllegalArgumentException("DTO must not be null"));
     }
 
     @Override
     public ServiceRespondDto update(ServiceRequestDto dto, Long id) {
-        Optional.ofNullable(id)
-                .flatMap(repository::findById)
-                .map(entity -> mapper.update(entity, dto))
-                .map(repository::save);
+       Optional<ServiceEntity> optionalServiceEntity = repository.findById(id);
+       if (optionalServiceEntity.isEmpty()){
+           throw new ResourceNotFoundException("Bunday id raqamli service yo`q");
+       }
+       else{
+           ServiceEntity serviceEntity = optionalServiceEntity.get();
+            serviceEntity.setActive(false);
+            repository.save(serviceEntity);
+       }
+        return Optional.ofNullable(dto)
+                .map(mapper::toEntity)
+                .map(entity -> {
+                    entity.setCreatedAt(LocalDateTime.now());
+                    return repository.save(entity);
+                })
+                .map(mapper::toServiceRespondDto)
+                .orElseThrow(() -> new IllegalArgumentException("DTO must not be null"));
 
-        ServiceEntity service = mapper.toEntity(dto);
-        return mapper.toServiceRespondDto(service);
     }
 
     @Override
@@ -80,6 +99,19 @@ public class TServiceImpl implements TService {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public String activeDelete(Long id) {
+        Optional<ServiceEntity> optionalServiceEntity = repository.findById(id);
+        if (optionalServiceEntity.isEmpty()){
+            throw new ResourceNotFoundException("Bunday id raqamli service yo`q");
+        }
+        ServiceEntity serviceEntity = optionalServiceEntity.get();
+        serviceEntity.setActive(false);
+        repository.save(serviceEntity);
+        return "O`chirildi";
+
     }
 
     @Override

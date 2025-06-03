@@ -4,6 +4,7 @@ package dental.client.controller;
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
 import dental.utils.DefaultResponseDto;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,10 @@ public interface ClientController {
 
 
     @GetMapping
-    List<ClientResponseDto> getAll();
+    ResponseEntity<List<ClientResponseDto>> getAll();
 
     @GetMapping("/{id}")
-    ClientResponseDto getOne(@PathVariable Long id);
+    ResponseEntity<ClientResponseDto> getOne(@PathVariable Long id);
 
     @GetMapping("/count-client")
     ResponseEntity<Integer> countClient();
@@ -30,6 +31,10 @@ public interface ClientController {
     @PutMapping("/{id}")
     ClientResponseDto update(@RequestBody ClientRequestDto dto, @PathVariable Long id);
 
+    @DeleteMapping("/passive-delete/{id}")
+    ResponseEntity<String> passiveDelete(@PathVariable Long id);
+
+    @Transactional
     @DeleteMapping("/{id}")
     DefaultResponseDto delete(@PathVariable Long id);
 

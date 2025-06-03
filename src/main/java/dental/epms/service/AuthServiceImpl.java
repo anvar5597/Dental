@@ -73,18 +73,18 @@ public class AuthServiceImpl  implements  AuthService {
         employees.setEmail(dto.getEmail());
         Optional <Employees> employees1=repository.findByEmail(dto.getEmail());
         if (employees1.isPresent()){
-           ResponseEntity.status(400).body("Bunday email mavjud");
+           throw new IllegalArgumentException("Bunday mail mavjud");
         }
         employees.setPhoneNumber(dto.getPhoneNumber());
         Optional <Employees> employees3=repository.findByPhoneNumber(dto.getPhoneNumber());
         if (employees3.isPresent()){
-            ResponseEntity.status(400).body("Bunday telefon nomer mavjud");
+           throw new IllegalArgumentException("Bunday telefon raqam mavjud");
 
         }
         employees.setLogin(dto.getLogin());
         Optional <Employees> employees2=repository.findByLogin(dto.getLogin());
         if (employees2.isPresent()){
-            ResponseEntity.status(400).body("Bunday foydalanuvchi nomi mavjud");
+        throw new IllegalArgumentException("Bunday foydalanuvchi nomi mavjud");
         }
         employees.setRole(dto.getRole());
         employees.setPassword(passwordEncoder.encode(dto.getPassword()));

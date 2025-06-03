@@ -19,4 +19,6 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
     List<PaymentEntity> findAllByPatientHistoryEntityClient_Id(Long id);
 
     List<PaymentEntity> findAllByPatientHistoryEntityEmployees_Id(Long id);
+
+    List<PaymentEntity> findByPatientHistoryEntityId(Long id);
 }

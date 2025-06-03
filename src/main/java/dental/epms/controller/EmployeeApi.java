@@ -31,5 +31,8 @@ public interface EmployeeApi {
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id );
 
+    @DeleteMapping("/passive-delete/{id}")
+    ResponseEntity<String> activeDelete(@PathVariable Long id);
+
 
 }

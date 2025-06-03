@@ -32,6 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeResponseDto> findAll() {
         return repository.findAll()
                 .stream()
+                .filter(Employees::getActive)
                 .map(mapper::toDto)
                 .toList();
     }
@@ -57,6 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeResponseDto> getAllDoctors() {
         return repository.findAllByRole(ERole.ROLE_USER)
                 .stream()
+                .filter(Employees::getActive)
                 .map(mapper::toDto)
                 .toList();
     }
@@ -82,6 +84,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public UserDetailsService userDetailsService() {
         return username -> (UserDetails) repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public String activeDelete(Long id) {
+        Optional<Employees> optionalEmployees = repository.findById(id);
+        if (optionalEmployees.isEmpty()){
+            throw new ResourceNotFoundException("Bunday doctor yo`q");
+        }
+        Employees employees = optionalEmployees.get();
+        employees.setActive(false);
+        repository.save(employees);
+        return "O`chirildi";
     }
 
     @Override

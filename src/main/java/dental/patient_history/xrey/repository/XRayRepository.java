@@ -16,4 +16,9 @@ import java.util.List;
 
 public interface XRayRepository extends JpaRepository<XRayEntity, Long> {
     List<XRayEntity> findByPatientHistory(PatientHistoryEntity patientHistory);
+
+    List<XRayEntity> findAllByPatientHistoryId(Long id);
+    List<XRayEntity> findByPatientHistoryId(Long id);
+
+
 }
