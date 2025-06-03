@@ -27,5 +27,7 @@ public interface EmployeeService {
 
     UserDetailsService userDetailsService();
 
+    String activeDelete(Long id);
+
 
 }

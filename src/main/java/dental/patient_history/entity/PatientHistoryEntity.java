@@ -45,7 +45,7 @@ public class PatientHistoryEntity {
     @JsonIgnore
     private Client client;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime appointmentTime;
 
@@ -56,6 +56,8 @@ public class PatientHistoryEntity {
     private Integer paid;
 
     private Integer expense ;
+
+    private Boolean active = true;
 
     private Boolean isPaid;
     @JsonManagedReference

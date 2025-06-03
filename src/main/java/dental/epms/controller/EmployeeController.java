@@ -49,9 +49,14 @@ public class EmployeeController implements EmployeeApi {
 
 
     @Override
-    public void delete(@PathVariable Long id) {
+    public void delete(Long id) {
         historyService.deleteWithEmployee(id);
          paymentService.deleteWithEmployee(id);
         employeeService.delete(id);
+    }
+
+    @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        return ResponseEntity.ok(employeeService.activeDelete(id));
     }
 }

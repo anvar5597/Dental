@@ -36,6 +36,7 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientResponseDto> findAll() {
         return repository.findAll()
                 .stream()
+                .filter(Client::getActive)
                 .map(mapper::toDto)
                 .toList();
     }
@@ -91,7 +92,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Integer countClient() {
-        List<Client> clients = repository.findAll();
+        List<Client> clients = repository.findAll()
+                .stream()
+                .filter(Client::getActive).toList();
         return clients.size();
     }
 
@@ -102,6 +105,8 @@ public class ClientServiceImpl implements ClientService {
                 .map(mapper::toDto)
                 .toList();
     }
+
+
 
     @Override
     public DefaultResponseDto delete(Long id) {
@@ -119,6 +124,18 @@ public class ClientServiceImpl implements ClientService {
                 .status(200)
                 .message("Mijoz o`chirildi")
                 .build();
+    }
+
+    @Override
+    public String passiveDelete(Long id) {
+        Optional<Client> optionalClient = repository.findById(id);
+        if (optionalClient.isEmpty()) {
+            throw new ResourceNotFoundException("Bunday id raqamli mijoz yo`q");
+        }
+        Client client = optionalClient.get();
+        client.setActive(false);
+        repository.save(client);
+        return "O`chirildi";
     }
 
     @Override

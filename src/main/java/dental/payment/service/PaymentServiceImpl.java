@@ -20,7 +20,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -218,6 +217,14 @@ public class PaymentServiceImpl implements PaymentService {
         workbook.close();
 
     }
+
+    @Override
+    public List<PaymentResponseDto> findByPatientId(Long id) {
+        return repository.findByPatientHistoryEntityId(id)
+                .stream()
+                .map(this::toDto)
+                .toList();
+        }
 
     @Override
     public PaymentResponseDto toDto(PaymentEntity entity) {

@@ -50,7 +50,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         boolean isTaken = false;
 
         PatientHistoryEntity patientHistoryEntity = new PatientHistoryEntity();
-        patientHistoryEntity.setCreatedAt(LocalDate.now());
+        patientHistoryEntity.setCreatedAt(LocalDateTime.now());
         patientHistoryEntity.setEmployees(doctor);
         patientHistoryEntity.setPaid(0);
         patientHistoryEntity.setTotal(0);
@@ -122,17 +122,26 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     public List<PatientResponseDto> findAll() {
         List<PatientResponseDto> dto = new ArrayList<>(repository.findAll()
                 .stream()
-                .filter(Objects::nonNull)
+                .filter(PatientHistoryEntity::getActive)
                 .map(this::toDto)
-                .filter(Objects::nonNull)
                 .toList());
         dto.sort(Comparator.comparing(PatientResponseDto::getPatientLName));
         return dto;
     }
 
+    public List<PatientResponseDto> findAllAfter() {
+        return repository.findAll()
+                .stream()
+                .filter(PatientHistoryEntity::getActive)
+                .filter(p -> !p.getAppointmentTime().toLocalDate().isBefore(LocalDate.now()))
+                .map(this::toDto)
+                .toList();
+    }
+
     public List<PatientShortInfoDto> findAllShort() {
         List<PatientShortInfoDto> dto = new ArrayList<>(repository.findAll()
                 .stream()
+                .filter(PatientHistoryEntity::getActive)
                 .map(this::toShortDto)
                 .toList());
         dto.sort(Comparator.comparing(PatientShortInfoDto::getPatientLName));
@@ -163,17 +172,27 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
         List<PatientHistoryEntity> patientHistoryEntities = repository.findByEmployeesId(id);
         return patientHistoryEntities.stream()
+                .filter(PatientHistoryEntity::getActive)
                 .map(this::toDto)
                 .toList();
 
     }
 
-
+    @Override
+    public List<PatientResponseDto> findByEmpIdIsServiced(Long id) {
+        return repository.findByEmployeesId(id)
+                .stream()
+                .filter(entity -> !entity.getIsServiced())
+                .filter(PatientHistoryEntity::getActive)
+                .map(this::toDto)
+                .toList();
+    }
 
     @Override
     public List<PatientResponseDto> findByClientId(Long id) {
         return repository.findByClient_Id(id)
                 .stream()
+                .filter(PatientHistoryEntity::getActive)
                 .map(this::toDto)
                 .toList();
     }
@@ -188,6 +207,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     public List<PatientResponseDto> findDebitPatient() {
         return repository.findAll()
                 .stream()
+                .filter(PatientHistoryEntity::getActive)
                 .filter(debit->!debit.getIsPaid())
                 .filter(PatientHistoryEntity::getIsServiced)
                 .map(this::toDto)
@@ -197,7 +217,7 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     @Override
     public PatientResponseDto findById(Long id) {
         Optional<PatientHistoryEntity> entityOptional = repository.findById(id);
-        if (entityOptional.isEmpty()) {
+        if (entityOptional.isEmpty() || !entityOptional.get().getActive()) {
             throw new ResourceNotFoundException("Bunday mijoz yo`q");
         }
 
@@ -220,6 +240,23 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
             }
         }
         return count;
+    }
+
+    public List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense() {
+        LocalDateTime twelveMonthsAgo = LocalDateTime.now().minusMonths(12);
+        List<Object[]> results = repository.findMonthlyTotalIncomeAndExpense(twelveMonthsAgo);
+
+        List<MonthlyIncomeExpenseDTO> list = new ArrayList<>();
+        for (Object[] row : results) {
+            int year = (Integer) row[0];
+            int month = (Integer) row[1];
+            Long totalIncome = row[2] != null ? (Long) row[2] : 0L;
+            Long totalExpense = row[3] != null ? (Long) row[3] : 0L;
+
+            list.add(new MonthlyIncomeExpenseDTO(year, month, null, totalIncome, totalExpense));
+        }
+
+        return list;
     }
 
     public List<MonthlyCountDTO> getMonthlyAppointmentCount() {
@@ -321,6 +358,10 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     public void deleteWithEmployee(Long id) {
         List<PatientHistoryEntity> patientHistoryEntities = repository.findAll();
         for (PatientHistoryEntity entity : patientHistoryEntities){
+
+            if(entity.getEmployees().getId().equals(id) && Boolean.TRUE.equals(entity.getDeleted())){
+                entity.setDeleted(true);
+            }
             if(entity.getEmployees().getId().equals(id)){
                 entity.setDeleted(true);
             }
@@ -336,6 +377,19 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
            }
        }
     }
+
+    @Override
+    public String activeDelete(Long id) {
+        Optional<PatientHistoryEntity> optional = repository.findById(id);
+        if (optional.isEmpty()) {
+            throw new ResourceNotFoundException("Bunday id mavjud emas");
+        }
+        PatientHistoryEntity entity = optional.get();
+        entity.setActive(false);
+        repository.save(entity);
+        return "id" + " o`chirildi";
+    }
+
     public PatientResponseDto toDtoService(PatientHistoryEntity entity) {
 
         if (entity == null) {
@@ -343,6 +397,8 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         }
         PatientResponseDto responseDto = new PatientResponseDto();
         responseDto.setId(entity.getId());
+        responseDto.setEmpId(entity.getEmployees().getId());
+        responseDto.setClientId(entity.getClient().getId());
         responseDto.setEmpName(entity.getEmployees().getFirstName());
         responseDto.setEmpLName(entity.getEmployees().getLastName());
         responseDto.setPatientName(entity.getClient().getName());
@@ -364,6 +420,8 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         }
         PatientResponseDto responseDto = new PatientResponseDto();
         responseDto.setId(entity.getId());
+        responseDto.setEmpId(entity.getEmployees().getId());
+        responseDto.setClientId(entity.getClient().getId());
         responseDto.setEmpName(entity.getEmployees().getFirstName());
         responseDto.setEmpLName(entity.getEmployees().getLastName());
         responseDto.setPatientName(entity.getClient().getName());
@@ -375,6 +433,8 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
         responseDto.setTeethServiceEntities(getServiceListDto(entity));
         responseDto.setExpense(entity.getExpense());
         responseDto.setCreatedAt(entity.getCreatedAt());
+        responseDto.setAppointmentTime(entity.getAppointmentTime());
+        responseDto.setEndTime(entity.getEndTime());
         return responseDto;
     }
 

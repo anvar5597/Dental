@@ -26,6 +26,8 @@ public interface ClientService {
 
     DefaultResponseDto delete(Long id);
 
+    String passiveDelete(Long id);
+
     ClientResponseDto toDto(Client client);
 
 

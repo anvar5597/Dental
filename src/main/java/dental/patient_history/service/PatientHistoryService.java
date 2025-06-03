@@ -13,11 +13,14 @@ public interface PatientHistoryService {
 
     List<PatientResponseDto> findAll();
 
-    public List<PatientShortInfoDto> findAllShort();
+    List<PatientResponseDto> findAllAfter();
+
+    List<PatientShortInfoDto> findAllShort();
 
     List<PatientResponseDto> findByEmpId(Long id);
+    List<PatientResponseDto> findByEmpIdIsServiced(Long id);
 
-    List<PatientResponseDto>findByClientId(Long id);
+    List<PatientResponseDto>findByClientId(Long id) ;
 
     PatientHistoryEntity getPatientById(Long id);
 
@@ -30,8 +33,9 @@ public interface PatientHistoryService {
     Integer countClientNotServiced();
 
     List<MonthlyCountDTO> getMonthlyAppointmentCount();
+    List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
 
-    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
+    List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
 
     Integer countClientServiced();
     EmployeeShortInfoDto findDoctorId(String token);
@@ -50,4 +54,6 @@ public interface PatientHistoryService {
     void deleteWithEmployee(Long id);
 
     void deleteWithClient(Long id);
+
+    String activeDelete(Long id);
 }

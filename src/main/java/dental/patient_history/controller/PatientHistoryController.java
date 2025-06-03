@@ -15,11 +15,18 @@ public interface PatientHistoryController {
     @GetMapping("find-all")
     ResponseEntity<List<PatientResponseDto>> findAll();
 
+    @GetMapping("find-all-after")
+    ResponseEntity<List<PatientResponseDto>> findAllAfter();
+
+
     @GetMapping("find-all-short")
     ResponseEntity<List<PatientShortInfoDto>> findAllShort();
 
     @GetMapping("doctor/{id}")
     List<PatientResponseDto> findByEmpId(@PathVariable Long id);
+
+    @GetMapping("doctor-not-serviced/{id}")
+    ResponseEntity<List<PatientResponseDto>> findByEmpIdIsServiced(@PathVariable Long id);
 
     @GetMapping("/find-client/{id}")
     ResponseEntity<List<PatientResponseDto>> findByClientId(@PathVariable Long id);
@@ -41,10 +48,14 @@ public interface PatientHistoryController {
     Integer countClient();
 
     @GetMapping("/monthly-appointments")
-    public List<MonthlyCountDTO> getMonthlyAppointmentCount();
+    List<MonthlyCountDTO> getMonthlyAppointmentCount();
+
+    @GetMapping("/monthly-total-income-expense")
+    public List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
 
     @GetMapping("/monthly-income-expense")
-    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee() ;
+    List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee() ;
+
     @GetMapping("/find-by-token")
     ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token);
 
@@ -61,4 +72,7 @@ public interface PatientHistoryController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> delete(@PathVariable Long id);
+
+    @DeleteMapping("/passive-delete/{id}")
+    ResponseEntity<String> activeDelete(@PathVariable Long id);
 }

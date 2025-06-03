@@ -16,6 +16,8 @@ public class TeethEntity {
 
     private String teethName;
 
+    private Boolean active = true;
+
 
 
 }

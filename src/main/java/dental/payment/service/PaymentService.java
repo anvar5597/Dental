@@ -28,6 +28,9 @@ public interface PaymentService {
 
     void exportToExcel(String filePath) throws IOException;
 
+    List<PaymentResponseDto> findByPatientId(Long id);
+
+
     PaymentResponseDto toDto(PaymentEntity entity);
 
     void deleteWithEmployee(Long id);

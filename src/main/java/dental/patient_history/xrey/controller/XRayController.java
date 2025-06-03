@@ -1,13 +1,11 @@
 package dental.patient_history.xrey.controller;
 
-import dental.client.analys.entity.ClientXRayEntity;
 import dental.patient_history.xrey.entity.XRayEntity;
 import dental.patient_history.xrey.service.FileDownloadZip;
 import dental.patient_history.xrey.service.XRayService;
 import dental.patient_history.xrey.xRayDto.XRayDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

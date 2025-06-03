@@ -30,13 +30,27 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
+    public ResponseEntity<List<PatientResponseDto>> findAllAfter() {
+        return ResponseEntity.ok(patientHistoryService.findAllAfter());
+    }
+
+    @Override
     public ResponseEntity<List<PatientShortInfoDto>> findAllShort() {
         return ResponseEntity.ok(patientHistoryService.findAllShort());
+    }
+
+    public List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense() {
+        return patientHistoryService.getMonthlyTotalIncomeAndExpense();
     }
 
     @Override
     public List<PatientResponseDto> findByEmpId(Long id) {
         return patientHistoryService.findByEmpId(id);
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findByEmpIdIsServiced(Long id) {
+        return ResponseEntity.ok(patientHistoryService.findByEmpIdIsServiced(id)) ;
     }
 
     @Override
@@ -107,5 +121,10 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     @Override
     public ResponseEntity<String> delete(Long id) {
         return ResponseEntity.ok(patientHistoryService.delete(id));
+    }
+
+    @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        return ResponseEntity.ok(patientHistoryService.activeDelete(id));
     }
 }

@@ -1,5 +1,6 @@
 package dental.teeth.service;
 
+import dental.exception.ResourceNotFoundException;
 import dental.teeth.dto.TeethRequestDto;
 import dental.teeth.dto.TeethResponseDto;
 import dental.teeth.entity.TeethEntity;
@@ -23,6 +24,7 @@ public class    TeethServiceImpl implements TeethService {
     public List<TeethResponseDto> findAll() {
         return repository.findAll()
                 .stream()
+                .filter(TeethEntity::getActive)
                 .map(mapper::toDto).
                 toList();
     }
@@ -71,7 +73,17 @@ public class    TeethServiceImpl implements TeethService {
         return mapper.toDto(entity);
     }
 
-
+    @Override
+    public String activeDelete(Long id) {
+        Optional<TeethEntity> optionalTeethEntity = repository.findById(id);
+        if (optionalTeethEntity.isEmpty()){
+            throw new ResourceNotFoundException("Bunday id raqamli servis yo`q");
+        }
+        TeethEntity teethEntity = optionalTeethEntity.get();
+        teethEntity.setActive(false);
+        repository.save(teethEntity);
+        return "O`chirildi";
+    }
 
 
 }
