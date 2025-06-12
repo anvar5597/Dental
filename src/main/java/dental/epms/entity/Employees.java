@@ -49,6 +49,9 @@ public class Employees implements UserDetails {
     @NotBlank
     private String password;
 
+    @NotBlank
+    private String openPassword;
+
     private LocalDate birthDay;
 
     private String phoneNumber;

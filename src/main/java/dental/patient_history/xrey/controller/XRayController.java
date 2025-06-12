@@ -59,10 +59,14 @@ public class XRayController {
                 .body(file);
     }
     @GetMapping("/x-ray/list/{patientId}")
-    private ResponseEntity<List<XRayDto>> findXray(@PathVariable Long patientId){
+    public ResponseEntity<List<XRayDto>> findXray(@PathVariable Long patientId){
         return ResponseEntity.ok(xrayService.findByPatientId(patientId));
     }
 
+    @GetMapping("/x-ray/client-list/{clientId}")
+    public ResponseEntity<List<XRayDto>> findXrayByClientId(@PathVariable Long clientId){
+        return ResponseEntity.ok(xrayService.findByClientId(clientId));
+    }
     // Faylni o‘chirish
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteXRay(@PathVariable Long id) {

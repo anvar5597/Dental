@@ -1,7 +1,8 @@
 package dental.epms.service;
 
-import dental.epms.dto.EmployeeRequestDto;
+import dental.epms.dto.EmployeeRespondPassword;
 import dental.epms.dto.EmployeeResponseDto;
+import dental.epms.dto.EmployeeUpdateRequest;
 import dental.epms.entity.ERole;
 import dental.epms.entity.Employees;
 import dental.epms.mapper.EmployeeMapper;
@@ -27,7 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
 
-
     @Override
     public List<EmployeeResponseDto> findAll() {
         return repository.findAll()
@@ -43,6 +43,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         return repository.findById(empID)
                 .map(mapper::toDto)
                 .orElse(null);
+    }
+    @Override
+    public EmployeeRespondPassword getEmployeeRespondPassword(Long id) {
+        Employees employees = repository.getReferenceById(id);
+
+        EmployeeRespondPassword employeeRespondPassword = new EmployeeRespondPassword();
+        employeeRespondPassword.setId(id);
+        employeeRespondPassword.setLogin(employees.getLogin());
+        employeeRespondPassword.setPassword(employees.getOpenPassword());
+        return employeeRespondPassword;
     }
 
     @Override
@@ -64,15 +74,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employees update(EmployeeRequestDto dto, Long id) {
+    public String update(EmployeeUpdateRequest dto, Long id) {
+        Employees employees = repository.getReferenceById(id);
+        employees.setFirstName(dto.getFirstName());
+        employees.setLastName(dto.getLastName());
+        employees.setPatronymic(dto.getPatronymic());
+        employees.setEmail(dto.getEmail());
+        employees.setRole(dto.getRole());
+        employees.setBirthDay(dto.getBirthDay());
+        employees.setPhoneNumber(dto.getPhoneNumber());
+        employees.setAddress(dto.getAddress());
+        repository.save(employees);
 
-        return Optional.ofNullable(id)
-                .flatMap(repository::findById)
-                .map(entity -> mapper.update(entity, dto))
-                .map(repository::save)
-                .orElseThrow();
+        return "Update";
 
     }
+
+
 
     @Override
     public void delete(Long id) {

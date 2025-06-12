@@ -1,7 +1,9 @@
 package dental.epms.controller;
 
-import dental.epms.dto.EmployeeRequestDto;
+import dental.epms.dto.EmployeeRequestPassword;
+import dental.epms.dto.EmployeeRespondPassword;
 import dental.epms.dto.EmployeeResponseDto;
+import dental.epms.dto.EmployeeUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,8 @@ public interface EmployeeApi {
 
     @GetMapping("/{id}")
     EmployeeResponseDto findEmpByID(@PathVariable  Long id);
+    @GetMapping("get-password/{id}")
+    ResponseEntity<EmployeeRespondPassword> getEmployeePassword(@PathVariable  Long id);
 
     @GetMapping("/doctors")
     List<EmployeeResponseDto>  getAllDoctors();
@@ -25,7 +29,7 @@ public interface EmployeeApi {
     ResponseEntity<Integer> countEmployee();
 
     @PutMapping("/{id}")
-    void update(@RequestBody EmployeeRequestDto entity , @PathVariable Long id);
+    ResponseEntity<String> update(@RequestBody EmployeeUpdateRequest entity , @PathVariable Long id);
 
 
     @DeleteMapping("/{id}")
