@@ -21,6 +21,8 @@ public interface TService {
 
     void delete(Long id);
 
+    String activeDelete(Long id);
+
     ServiceRespondDto  toDto(ServiceEntity entity);
 
     ServiceEntity getEntityById(Long serviceId);

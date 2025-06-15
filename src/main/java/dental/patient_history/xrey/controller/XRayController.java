@@ -1,18 +1,21 @@
 package dental.patient_history.xrey.controller;
 
 import dental.patient_history.xrey.entity.XRayEntity;
+import dental.patient_history.xrey.service.FileDownloadZip;
 import dental.patient_history.xrey.service.XRayService;
+import dental.patient_history.xrey.xRayDto.XRayDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -22,6 +25,7 @@ public class XRayController {
 
     private final XRayService xrayService;
 
+    private final FileDownloadZip fileDownloadZip;
     // Fayl yuklash
     @PostMapping("/upload/{patientHistoryId}")
     public ResponseEntity<String> uploadXRay(@RequestParam("file") MultipartFile file, @PathVariable Long patientHistoryId) {
@@ -33,19 +37,36 @@ public class XRayController {
         }
     }
 
-    // Faylni yuklab olish
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getXRay(@PathVariable Long id) {
-        try {
-            byte[] fileData = xrayService.getXRayFile(id);
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"xray_" + id + "\"")
-                    .body(fileData);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    @GetMapping("/{patientId}/files/download")
+    public void downloadClientFiles(@PathVariable Long patientId, HttpServletResponse response) throws IOException {
+        List<XRayEntity> files = xrayService.findXRayByPatientId(patientId);
+        if (files.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No files found for client ID: " + patientId);
+            return;
         }
+        fileDownloadZip.writeFilesToZip(files, response);
     }
 
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadXRayById(@PathVariable Long id) throws IOException {
+        XRayEntity xRay = xrayService.getXRayById(id);
+        Resource file = xrayService.getFileResource(xRay);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + xRay.getFileName() + "\"")
+                .body(file);
+    }
+    @GetMapping("/x-ray/list/{patientId}")
+    public ResponseEntity<List<XRayDto>> findXray(@PathVariable Long patientId){
+        return ResponseEntity.ok(xrayService.findByPatientId(patientId));
+    }
+
+    @GetMapping("/x-ray/client-list/{clientId}")
+    public ResponseEntity<List<XRayDto>> findXrayByClientId(@PathVariable Long clientId){
+        return ResponseEntity.ok(xrayService.findByClientId(clientId));
+    }
     // Faylni o‘chirish
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteXRay(@PathVariable Long id) {

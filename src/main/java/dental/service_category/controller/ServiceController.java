@@ -23,6 +23,9 @@ public interface ServiceController {
     @PostMapping
     String create(@RequestBody ServiceRequestDto dto);
 
+    @DeleteMapping("/passive-delete/{id}")
+    ResponseEntity<String> activeDelete(@PathVariable Long id);
+
 
     @PutMapping("/{id}")
     ServiceRespondDto update(@RequestBody ServiceRequestDto dto, @PathVariable Long id);

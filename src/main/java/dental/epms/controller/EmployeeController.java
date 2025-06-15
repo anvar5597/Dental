@@ -1,13 +1,15 @@
 package dental.epms.controller;
 
-import dental.epms.dto.EmployeeRequestDto;
+import dental.epms.dto.EmployeeRequestPassword;
+import dental.epms.dto.EmployeeRespondPassword;
 import dental.epms.dto.EmployeeResponseDto;
+import dental.epms.dto.EmployeeUpdateRequest;
+import dental.epms.service.AuthService;
 import dental.epms.service.EmployeeServiceImpl;
 import dental.patient_history.service.PatientHistoryService;
 import dental.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class EmployeeController implements EmployeeApi {
     private final EmployeeServiceImpl employeeService;
     private final PatientHistoryService historyService;
     private final PaymentService paymentService;
+    private final AuthService authService;
 
     @Override
     public List<EmployeeResponseDto> getAll() {
@@ -42,16 +45,27 @@ public class EmployeeController implements EmployeeApi {
     }
 
     @Override
-    public void update(EmployeeRequestDto entity, Long id) {
-        employeeService.update(entity, id);
+    public ResponseEntity<EmployeeRespondPassword> getEmployeePassword(Long id) {
+        return ResponseEntity.ok(employeeService.getEmployeeRespondPassword(id));
+    }
+
+    @Override
+    public ResponseEntity<String> update(EmployeeUpdateRequest entity, Long id) {
+       return ResponseEntity.ok(employeeService.update(entity, id));
     }
 
 
 
     @Override
-    public void delete(@PathVariable Long id) {
+    public void delete(Long id) {
         historyService.deleteWithEmployee(id);
          paymentService.deleteWithEmployee(id);
         employeeService.delete(id);
+    }
+
+    @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        authService.delete(id);
+        return ResponseEntity.ok(employeeService.activeDelete(id));
     }
 }

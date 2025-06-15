@@ -36,6 +36,8 @@ public class Client {
 
     private String address;
 
+    private Boolean active = true;
+
     private Boolean deleted = false;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<ClientXRayEntity> xrayImages;

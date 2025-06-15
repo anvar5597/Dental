@@ -8,13 +8,14 @@
 
 package dental.client.controller;
 
-import dental.client.service.ClientService;
 import dental.client.dto.ClientRequestDto;
 import dental.client.dto.ClientResponseDto;
+import dental.client.service.ClientService;
 import dental.notification.service.NotificationService;
 import dental.patient_history.service.PatientHistoryService;
 import dental.payment.service.PaymentService;
 import dental.utils.DefaultResponseDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +31,13 @@ public class ClientControllerImpl implements ClientController{
     private final NotificationService notificationService;
     private final PaymentService paymentService;
     @Override
-    public List<ClientResponseDto> getAll() {
-        return service.findAll();
+    public ResponseEntity<List<ClientResponseDto>> getAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @Override
-    public ClientResponseDto getOne(Long id) {
-        return service.getByID(id);
+    public ResponseEntity<ClientResponseDto> getOne(Long id) {
+        return ResponseEntity.ok(service.getByID(id));
     }
 
     @Override
@@ -61,6 +62,13 @@ public class ClientControllerImpl implements ClientController{
         return service.update(dto,id);
     }
 
+    @Override
+    public ResponseEntity<String> passiveDelete(Long id) {
+        return ResponseEntity.ok(service.passiveDelete(id));
+    }
+
+
+    @Transactional
     @Override
     public DefaultResponseDto delete(Long id) {
         historyService.deleteWithClient(id);

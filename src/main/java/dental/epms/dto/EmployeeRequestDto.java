@@ -4,6 +4,7 @@ package dental.epms.dto;
 import dental.epms.entity.ERole;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class EmployeeRequestDto {
     @NotBlank
     private String password;
     @NotBlank
+    @Email(message = "Email noto‘g‘ri kiritilgan")
     private String email;
     @NotBlank
     @Enumerated(EnumType.STRING)

@@ -2,6 +2,7 @@ package dental.teeth.controller;
 
 import dental.teeth.dto.TeethRequestDto;
 import dental.teeth.dto.TeethResponseDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface TeethApi {
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id);
+
+    @DeleteMapping("/passive-delete/{id}")
+    ResponseEntity<String> activeDelete(@PathVariable Long id);
 }

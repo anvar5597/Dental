@@ -14,6 +14,7 @@ import dental.client.entity.Gender;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -22,6 +23,8 @@ public class PatientResponseDto {
 
     private String empName;
     private String empLName;
+    private Long empId;
+    private Long clientId;
     private String patientName;
     private String patientLName;
     private String phoneNumber;
@@ -29,8 +32,12 @@ public class PatientResponseDto {
     private LocalDate birthDay;
     private Gender gender;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime appointmentTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime endTime;
 
     private List<TServiceListDto> teethServiceEntities;
 

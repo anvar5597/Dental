@@ -17,17 +17,13 @@ public interface PatientRepository extends JpaRepository<PatientHistoryEntity, L
 
     List<PatientHistoryEntity> findByEmployeesId(Long id);
 
+
+    List<PatientHistoryEntity> findByClient_Id(Long id);
+
     @NotNull Optional<PatientHistoryEntity> findById(@NotNull Long id);
 
-    Boolean existsByEmployeesAndAppointmentTimeBetweenOrEndTimeBetweenOrAndAppointmentTimeLessThanAndEndTimeGreaterThan(
-            Employees employees,
-            LocalDateTime startTime1,
-            LocalDateTime endTime1,
-            LocalDateTime startTime2,
-            LocalDateTime endTime2,
-            LocalDateTime startTime3,
-            LocalDateTime endTime3
-    );
+    List<PatientHistoryEntity> findByAppointmentTimeAfter(LocalDateTime appointmentTimeAfter);
+
 
     @Query(value = """
         SELECT YEAR(p.appointmentTime) as year, MONTH(p.appointmentTime) as month, COUNT(p.id) as count
@@ -65,4 +61,17 @@ public interface PatientRepository extends JpaRepository<PatientHistoryEntity, L
         ORDER BY YEAR(p.appointmentTime) DESC, MONTH(p.appointmentTime) DESC
     """)
     List<Object[]> findMonthlyIncomeAndExpensePerEmployee(@Param("startDate") LocalDateTime startDate);
+
+    @Query(value = """
+        SELECT 
+            YEAR(p.appointmentTime) as year,
+            MONTH(p.appointmentTime) as month,
+            SUM(p.paid) as totalIncome,
+            SUM(p.expense) as totalExpense
+        FROM PatientHistoryEntity p
+        WHERE p.appointmentTime >= :startDate
+        GROUP BY YEAR(p.appointmentTime), MONTH(p.appointmentTime)
+        ORDER BY YEAR(p.appointmentTime) DESC, MONTH(p.appointmentTime) DESC
+    """)
+    List<Object[]> findMonthlyTotalIncomeAndExpense(@Param("startDate") LocalDateTime startDate);
 }
