@@ -19,6 +19,7 @@ public interface PatientHistoryService {
 
     List<PatientResponseDto> findByEmpId(Long id);
     List<PatientResponseDto> findByEmpIdIsServiced(Long id);
+    List<PatientResponseDto> findByEmpIdIsNotServiced(Long id);
 
     List<PatientResponseDto>findByClientId(Long id) ;
 

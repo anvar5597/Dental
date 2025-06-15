@@ -189,6 +189,16 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     }
 
     @Override
+    public List<PatientResponseDto> findByEmpIdIsNotServiced(Long id) {
+        return repository.findByEmployeesId(id)
+                .stream()
+                .filter(PatientHistoryEntity::getIsServiced)
+                .filter(PatientHistoryEntity::getActive)
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
     public List<PatientResponseDto> findByClientId(Long id) {
         return repository.findByClient_Id(id)
                 .stream()

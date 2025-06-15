@@ -68,9 +68,8 @@ public class XRayService {
                 .toList();
     }
     public List<XRayDto> findByClientId(Long clientId) {
-        return xrayRepository.findAll()
+        return xrayRepository.findByClientId(clientId)
                 .stream()
-                .filter(id -> id.getPatientHistory().getClient().getId().equals(clientId))
                 .map(this::toDto)
                 .toList();
     }

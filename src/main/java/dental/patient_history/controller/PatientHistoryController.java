@@ -25,8 +25,11 @@ public interface PatientHistoryController {
     @GetMapping("doctor/{id}")
     List<PatientResponseDto> findByEmpId(@PathVariable Long id);
 
-    @GetMapping("doctor-not-serviced/{id}")
+    @GetMapping("doctor-serviced/{id}")
     ResponseEntity<List<PatientResponseDto>> findByEmpIdIsServiced(@PathVariable Long id);
+
+    @GetMapping("doctor-not-serviced/{id}")
+    ResponseEntity<List<PatientResponseDto>> findByEmpIdIsNotServiced(@PathVariable Long id);
 
     @GetMapping("/find-client/{id}")
     ResponseEntity<List<PatientResponseDto>> findByClientId(@PathVariable Long id);

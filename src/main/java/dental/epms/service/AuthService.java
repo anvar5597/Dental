@@ -8,5 +8,6 @@ public interface AuthService {
 
     ResponseEntity<String> create(EmployeeRequestDto dto);
     String updatePassword(EmployeeRequestPassword dto, Long id);
+    String delete(Long id);
 
 }

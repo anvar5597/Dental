@@ -19,4 +19,6 @@ public interface JwtTokenRepo extends JpaRepository<JwtTokenEntity, Long> {
 
     @Modifying
     void deleteByApiTypeAndUser(ApiType apiType, Employees employees);
+
+    Optional<JwtTokenEntity> findByUserId(Long id);
 }

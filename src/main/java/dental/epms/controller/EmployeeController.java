@@ -4,6 +4,7 @@ import dental.epms.dto.EmployeeRequestPassword;
 import dental.epms.dto.EmployeeRespondPassword;
 import dental.epms.dto.EmployeeResponseDto;
 import dental.epms.dto.EmployeeUpdateRequest;
+import dental.epms.service.AuthService;
 import dental.epms.service.EmployeeServiceImpl;
 import dental.patient_history.service.PatientHistoryService;
 import dental.payment.service.PaymentService;
@@ -20,6 +21,7 @@ public class EmployeeController implements EmployeeApi {
     private final EmployeeServiceImpl employeeService;
     private final PatientHistoryService historyService;
     private final PaymentService paymentService;
+    private final AuthService authService;
 
     @Override
     public List<EmployeeResponseDto> getAll() {
@@ -63,6 +65,7 @@ public class EmployeeController implements EmployeeApi {
 
     @Override
     public ResponseEntity<String> activeDelete(Long id) {
+        authService.delete(id);
         return ResponseEntity.ok(employeeService.activeDelete(id));
     }
 }

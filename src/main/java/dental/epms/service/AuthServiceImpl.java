@@ -1,12 +1,14 @@
 package dental.epms.service;
 
 
-import dental.epms.dto.*;
-
+import dental.epms.dto.AuthDto;
+import dental.epms.dto.EmployeeRequestDto;
+import dental.epms.dto.EmployeeRequestPassword;
+import dental.epms.dto.LoginDto;
 import dental.epms.entity.Employees;
+import dental.epms.entity.JwtTokenEntity;
 import dental.epms.repository.EmployeeRepository;
 import dental.epms.repository.JwtTokenRepo;
-import dental.exception.ResourceNotFoundException;
 import dental.exception.UnauthorizedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class AuthServiceImpl  implements  AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public AuthDto login(LoginDto loginDto) {
@@ -102,6 +105,13 @@ public class AuthServiceImpl  implements  AuthService {
         return "Password updated";
     }
 
+    @Override
+    public String delete(Long id) {
+        Optional<Employees> employeesEntity = employeeRepository.findById(id);
+        if (employeesEntity.isEmpty()) throw new IllegalArgumentException("Bunday foydalanuvchi nomi mavjud");
+       jwtTokenRepo.deleteByUser(employeesEntity.get());
+        return "O`chirildi";
+    }
 
 
     private Employees findEmployeeByLogin(String login)  {
