@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,13 +31,43 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
+    public ResponseEntity<List<PatientResponseDto>> findAllAfter() {
+        return ResponseEntity.ok(patientHistoryService.findAllAfter());
+    }
+
+    @Override
     public ResponseEntity<List<PatientShortInfoDto>> findAllShort() {
         return ResponseEntity.ok(patientHistoryService.findAllShort());
+    }
+
+    public List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense() {
+        return patientHistoryService.getMonthlyTotalIncomeAndExpense();
     }
 
     @Override
     public List<PatientResponseDto> findByEmpId(Long id) {
         return patientHistoryService.findByEmpId(id);
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findByEmpIdIsServiced(Long id) {
+        return ResponseEntity.ok(patientHistoryService.findByEmpIdIsServiced(id)) ;
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findByEmpIdIsNotServiced(Long id) {
+
+        return ResponseEntity.ok(patientHistoryService.findByEmpIdIsNotServiced(id)) ;
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findByClientId(Long id) {
+        return ResponseEntity.ok(patientHistoryService.findByClientId(id));
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findDebtPatient() {
+        return ResponseEntity.ok(patientHistoryService.findDebitPatient());
     }
 
     @Override
@@ -95,7 +126,17 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
+    public ResponseEntity<List<PatientResponseDto>> findByClientIdBetween(Long id, LocalDateTime start, LocalDateTime end) {
+        return ResponseEntity.ok(patientHistoryService.findByEmpIdIsServicedBetween(id, start, end));
+    }
+
+    @Override
     public ResponseEntity<String> delete(Long id) {
         return ResponseEntity.ok(patientHistoryService.delete(id));
+    }
+
+    @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        return ResponseEntity.ok(patientHistoryService.activeDelete(id));
     }
 }

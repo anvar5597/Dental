@@ -1,6 +1,7 @@
 package dental.epms.mapper;
 
 import dental.epms.dto.EmployeeRequestDto;
+import dental.epms.dto.EmployeeRequestPassword;
 import dental.epms.dto.EmployeeResponseDto;
 import dental.epms.dto.LoginDto;
 import dental.epms.entity.Employees;
@@ -22,6 +23,10 @@ public interface EmployeeMapper {
     LoginDto toLoginDto(Employees employees);
 
     Employees update(@MappingTarget Employees entity, EmployeeRequestDto dto);
+
+
+    Employees update(@MappingTarget Employees entity, EmployeeRequestPassword dto);
+
 
 
 }

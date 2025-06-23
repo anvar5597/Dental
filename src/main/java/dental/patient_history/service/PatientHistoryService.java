@@ -7,17 +7,30 @@ import dental.patient_history.entity.PatientHistoryEntity;
 import dental.utils.DefaultResponseDto;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PatientHistoryService {
 
     List<PatientResponseDto> findAll();
 
-    public List<PatientShortInfoDto> findAllShort();
+    List<PatientResponseDto> findAllAfter();
+
+    List<PatientShortInfoDto> findAllShort();
 
     List<PatientResponseDto> findByEmpId(Long id);
 
+    List<PatientResponseDto> findByEmpIdIsServiced(Long id);
+
+    List<PatientResponseDto> findByEmpIdIsNotServiced(Long id);
+
+    List<PatientResponseDto> findByEmpIdIsServicedBetween(Long id, LocalDateTime start, LocalDateTime end);
+
+    List<PatientResponseDto>findByClientId(Long id) ;
+
     PatientHistoryEntity getPatientById(Long id);
+
+    List<PatientResponseDto> findDebitPatient();
 
     PatientResponseDto findById(Long id);
 
@@ -26,8 +39,9 @@ public interface PatientHistoryService {
     Integer countClientNotServiced();
 
     List<MonthlyCountDTO> getMonthlyAppointmentCount();
+    List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
 
-    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
+    List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
 
     Integer countClientServiced();
     EmployeeShortInfoDto findDoctorId(String token);
@@ -46,4 +60,6 @@ public interface PatientHistoryService {
     void deleteWithEmployee(Long id);
 
     void deleteWithClient(Long id);
+
+    String activeDelete(Long id);
 }

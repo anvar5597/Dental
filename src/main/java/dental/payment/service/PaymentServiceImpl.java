@@ -20,7 +20,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -45,10 +44,6 @@ public class PaymentServiceImpl implements PaymentService {
         paymentEntity.setPaidValue(dto.getPaidValue());
         paymentEntity.setPatientHistoryEntity(patientHistory);
         paymentEntity.setPaidDate(LocalDate.now());
-/*
-        paymentEntity.getPatientHistoryEntity().getClient().setDebt(
-                paymentEntity.getPatientHistoryEntity().getClient().getDebt()-dto.getPaidValue());
-*/
         paymentEntity.setDeleted(false);
         repository.save(paymentEntity);
 
@@ -94,6 +89,15 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentResponseDto> findAll() {
         return repository.findAll()
                 .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<PaymentResponseDto> paymentByDebt() {
+        return repository.findAll()
+                .stream()
+                .filter(payment -> !payment.getPatientHistoryEntity().getIsPaid())
                 .map(this::toDto)
                 .toList();
     }
@@ -213,6 +217,14 @@ public class PaymentServiceImpl implements PaymentService {
         workbook.close();
 
     }
+
+    @Override
+    public List<PaymentResponseDto> findByPatientId(Long id) {
+        return repository.findByPatientHistoryEntityId(id)
+                .stream()
+                .map(this::toDto)
+                .toList();
+        }
 
     @Override
     public PaymentResponseDto toDto(PaymentEntity entity) {

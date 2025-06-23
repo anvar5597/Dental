@@ -1,13 +1,18 @@
 package dental.patient_history.xrey.service;
 
+import dental.client.analys.entity.ClientXRayEntity;
 import dental.patient_history.entity.PatientHistoryEntity;
 import dental.patient_history.repository.PatientRepository;
 import dental.patient_history.xrey.entity.XRayEntity;
 import dental.patient_history.xrey.repository.XRayRepository;
+import dental.patient_history.xrey.xRayDto.XRayDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,14 +61,42 @@ public class XRayService {
         return xrayRepository.save(xrayEntity);
     }
 
-    public byte[] getXRayFile(Long id) throws IOException {
-        Optional<XRayEntity> xray = xrayRepository.findById(id);
-        if (xray.isPresent()) {
-            Path filePath = Paths.get(xray.get().getFilePath());
-            return Files.readAllBytes(filePath);
-        }
-        throw new RuntimeException("Fayl topilmadi!");
+    public List<XRayDto> findByPatientId(Long id) {
+        return xrayRepository.findAllByPatientHistoryId(id)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
+    public List<XRayDto> findByClientId(Long clientId) {
+        return xrayRepository.findByClientId(clientId)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<XRayEntity> findXRayByPatientId(Long id){
+        return xrayRepository.findByPatientHistoryId(id);
+    }
+
+    public XRayEntity getXRayById(Long id) {
+        return xrayRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("X-Ray fayl topilmadi"));
+    }
+
+    public Resource getFileResource(XRayEntity xRay) throws IOException {
+        Path path = Paths.get(xRay.getFilePath());
+        if (!Files.exists(path)) {
+            throw new FileNotFoundException("Fayl mavjud emas: " + xRay.getFilePath());
+        }
+        return new UrlResource(path.toUri());
+    }
+    public XRayDto toDto(XRayEntity entity) {
+        XRayDto dto = new XRayDto();
+        dto.setId(entity.getId());
+        dto.setFileName(entity.getFileName());
+        return dto;
+    }
+
 
     public void deleteXRay(Long id) throws IOException {
         Optional<XRayEntity> xray = xrayRepository.findById(id);

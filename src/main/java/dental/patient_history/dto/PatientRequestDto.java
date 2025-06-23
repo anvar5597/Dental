@@ -11,6 +11,7 @@ package dental.patient_history.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class PatientRequestDto {
 
     private Long clientId;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     private List<TeethServiceDto> teethServiceDtoList;
 
