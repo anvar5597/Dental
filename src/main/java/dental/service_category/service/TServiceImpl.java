@@ -121,7 +121,11 @@ public class TServiceImpl implements TService {
 
     @Override
     public ServiceEntity getEntityById(Long serviceId) {
-        return repository.findById(serviceId).get();
+        Optional<ServiceEntity> entity = repository.findById(serviceId);
+        if (entity.isEmpty()){
+            throw new ResourceNotFoundException("Bunday id raqamli service yo");
+        }
+        return entity.get();
     }
 
 

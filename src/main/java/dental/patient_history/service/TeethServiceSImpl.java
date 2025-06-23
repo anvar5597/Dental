@@ -8,6 +8,7 @@
 
 package dental.patient_history.service;
 
+import dental.exception.ResourceNotFoundException;
 import dental.patient_history.dto.PatientServiceAddDto;
 
 import dental.patient_history.entity.PatientHistoryEntity;
@@ -20,6 +21,8 @@ import dental.teeth.service.TeethServiceImpl;
 import dental.utils.DefaultResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -37,7 +40,11 @@ public class TeethServiceSImpl implements TeethServiceS {
     @Override
     public DefaultResponseDto createTeethServiceForPatientHistory(PatientServiceAddDto dto) {
 
-        PatientHistoryEntity entity = repository.findById(dto.getPatientId()).get();
+        Optional<PatientHistoryEntity> entityOptional = repository.findById(dto.getPatientId());
+        if (entityOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Patient History Not Found");
+        }
+        PatientHistoryEntity entity = entityOptional.get();
         if (Boolean.TRUE.equals(entity.getIsServiced())) throw new IllegalArgumentException("Hizmat qo`shib bo`lmaydi");
         Integer total = entity.getTotal();
         entity.setTotal(Integer.sum(total,service.getEntityById(dto.getServiceId()).getPrice()));

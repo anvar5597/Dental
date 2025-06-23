@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -122,6 +123,11 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     @Override
     public ResponseEntity<String> update(PatientRequestDto dto, Long id) {
         return ResponseEntity.ok(patientHistoryService.update(dto, id));
+    }
+
+    @Override
+    public ResponseEntity<List<PatientResponseDto>> findByClientIdBetween(Long id, LocalDateTime start, LocalDateTime end) {
+        return ResponseEntity.ok(patientHistoryService.findByEmpIdIsServicedBetween(id, start, end));
     }
 
     @Override

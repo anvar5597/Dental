@@ -192,11 +192,26 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     public List<PatientResponseDto> findByEmpIdIsNotServiced(Long id) {
         return repository.findByEmployeesId(id)
                 .stream()
-                .filter(PatientHistoryEntity::getIsServiced)
+                .filter(entity -> entity.getIsServiced()
+                && entity.getEndTime().getMonth().equals(LocalDate.now().getMonth())
+                && entity.getEndTime().getYear() == LocalDate.now().getYear())
                 .filter(PatientHistoryEntity::getActive)
                 .map(this::toDto)
                 .toList();
     }
+
+    @Override
+    public List<PatientResponseDto> findByEmpIdIsServicedBetween(Long id, LocalDateTime start, LocalDateTime end) {
+        return repository.findByEmployeesId(id)
+                .stream()
+                .filter(entity -> entity.getIsServiced()
+                        && entity.getEndTime().isAfter(start)
+                        && entity.getEndTime().isBefore(end))
+                .filter(PatientHistoryEntity::getActive)
+                .map(this::toDto)
+                .toList();
+    }
+
 
     @Override
     public List<PatientResponseDto> findByClientId(Long id) {

@@ -7,6 +7,7 @@ import dental.patient_history.entity.PatientHistoryEntity;
 import dental.utils.DefaultResponseDto;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PatientHistoryService {
@@ -18,8 +19,12 @@ public interface PatientHistoryService {
     List<PatientShortInfoDto> findAllShort();
 
     List<PatientResponseDto> findByEmpId(Long id);
+
     List<PatientResponseDto> findByEmpIdIsServiced(Long id);
+
     List<PatientResponseDto> findByEmpIdIsNotServiced(Long id);
+
+    List<PatientResponseDto> findByEmpIdIsServicedBetween(Long id, LocalDateTime start, LocalDateTime end);
 
     List<PatientResponseDto>findByClientId(Long id) ;
 

@@ -7,6 +7,7 @@ import dental.utils.DefaultResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestMapping("/patient")
@@ -42,9 +43,9 @@ public interface PatientHistoryController {
     @PostMapping("/create")
     ResponseEntity<String> create(@RequestBody PatientAddDto dto);
 
-    @GetMapping("/clients-not-serviced")
-    Integer countClientNotServiced();
     @GetMapping("/clients-serviced")
+    Integer countClientNotServiced();
+    @GetMapping("/clients-not-serviced")
     Integer countClientServiced();
 
     @GetMapping("/clients")
@@ -72,6 +73,10 @@ public interface PatientHistoryController {
 
     @PutMapping("update/{id}")
     ResponseEntity<String> update(@RequestBody PatientRequestDto dto, @PathVariable Long id);
+
+    @GetMapping("/clients-serviced-between/{id}")
+    ResponseEntity<List<PatientResponseDto>> findByClientIdBetween(@PathVariable Long id,
+                        @RequestParam LocalDateTime start, @RequestParam LocalDateTime end);
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> delete(@PathVariable Long id);
