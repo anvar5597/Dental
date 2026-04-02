@@ -27,10 +27,10 @@ public class WebConfig {
                 HttpHeaders.CONTENT_TYPE
         ));
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("https://185.177.59.64");
-        configuration.addAllowedOrigin("http://185.177.59.64");
-        configuration.addAllowedOrigin("https://185.177.59.64:5173");
-        configuration.addAllowedOrigin("http://185.177.59.64:5173");
+        configuration.addAllowedOrigin("https://185.209.228.215");
+        configuration.addAllowedOrigin("http://185.209.228.215");
+        configuration.addAllowedOrigin("https://185.209.228.215:5173");
+        configuration.addAllowedOrigin("http://185.209.228.215:5173");
         configuration.addAllowedOrigin("https://www.3dclinic.uz");
         configuration.addAllowedOrigin("http://www.3dclinic.uz");
         configuration.addAllowedOrigin("https://stom-project.netlify.app/");

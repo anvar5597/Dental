@@ -15,7 +15,7 @@ import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -31,7 +31,7 @@ public class Notification {
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 
-    private LocalDate nextVisit;
+    private LocalDateTime nextVisit;
 
     private Boolean deleted = false;
 }

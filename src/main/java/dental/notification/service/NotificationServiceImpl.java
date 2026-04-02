@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -146,7 +147,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = optionalNotification.get();
         notification.setDeleted(true);
         repository.save(notification);
-        return "Mijoz o`chirildi";
+        return "Eslatma o`chirildi";
     }
 
 

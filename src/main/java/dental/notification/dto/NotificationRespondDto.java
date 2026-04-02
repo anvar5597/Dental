@@ -11,7 +11,7 @@ package dental.notification.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class NotificationRespondDto {
@@ -21,6 +21,6 @@ public class NotificationRespondDto {
     private String clientLastName;
     private String phoneNumber;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate nextVisit;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern  = "HH:mm dd.MM.yyyy")
+    private LocalDateTime nextVisit;
 }

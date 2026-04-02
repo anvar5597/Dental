@@ -8,13 +8,14 @@
 
 package dental.notification.dto;
 
-import dental.client.entity.Client;
+
 import lombok.Data;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 @Data
 public class NotificationRequestDto {
     private Long clientId;
-    private LocalDate nextVisit;
+    private LocalDateTime nextVisit;
 }
