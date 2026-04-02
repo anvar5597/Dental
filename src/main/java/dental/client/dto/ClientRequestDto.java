@@ -24,6 +24,8 @@ public class ClientRequestDto {
 
     private String patronymic;
 
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

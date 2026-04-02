@@ -1,0 +1,19 @@
+services:
+  dental:
+    image: anvar5597/dental:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "dental"
+    ports:
+      - "8085:8085"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
+    networks:
+      - dental-network
+
+networks:
+  dental-network:
+    name: dental-network
+    driver: bridge

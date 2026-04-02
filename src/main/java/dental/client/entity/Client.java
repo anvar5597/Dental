@@ -27,6 +27,8 @@ public class Client {
 
     private String patronymic;
 
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

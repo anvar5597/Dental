@@ -27,6 +27,9 @@ public class PaymentResponseDto {
     private Integer debit;
 
     private Integer paid;
+
+    private Integer sale;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate paidDate;
 }

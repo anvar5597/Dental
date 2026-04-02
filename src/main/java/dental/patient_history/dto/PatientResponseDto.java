@@ -44,4 +44,6 @@ public class PatientResponseDto {
     private Integer expense;
 
     private Boolean isServiced ;
+
+    private Integer sale;
 }

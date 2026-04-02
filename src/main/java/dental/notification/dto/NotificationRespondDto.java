@@ -8,10 +8,10 @@
 
 package dental.notification.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class NotificationRespondDto {
@@ -21,6 +21,6 @@ public class NotificationRespondDto {
     private String clientLastName;
     private String phoneNumber;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate nextVisit;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime nextVisit;
 }

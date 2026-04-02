@@ -71,6 +71,11 @@ public class PatientHistoryControllerImpl implements PatientHistoryController {
     }
 
     @Override
+    public ResponseEntity<List<PatientResponseDto>> findPaidPatient() {
+        return ResponseEntity.ok(patientHistoryService.findPaidPatient());
+    }
+
+    @Override
     public ResponseEntity<PatientResponseDto> findById(Long id) {
         return ResponseEntity.ok(patientHistoryService.findById(id));
     }

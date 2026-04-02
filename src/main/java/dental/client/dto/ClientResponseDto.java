@@ -9,16 +9,16 @@
 package dental.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import dental.client.entity.Gender;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class ClientResponseDto {
+public class ClientResponseDto implements Serializable {
     private Long id;
 
     private String name;
@@ -26,6 +26,8 @@ public class ClientResponseDto {
     private String  lastName;
 
     private String patronymic;
+
+    private String comment;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

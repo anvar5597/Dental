@@ -1,0 +1,45 @@
+services:
+  dental-db:
+    image: postgres:17.4
+    container_name: dental-db
+    environment:
+      POSTGRES_USER: dental
+      POSTGRES_PASSWORD: d3dental
+      POSTGRES_DB: dental_db
+    hostname: dental-db.uz
+#    ports:
+#      - "5433:5432"
+    networks:
+      dental-network:
+        aliases:
+          - dental-db.uz
+    volumes:
+      - type: bind
+        bind:
+          create_host_path: true
+        source: /home/database/dental/
+        target: /var/lib/postgresql/data
+
+    # 🔐 XAVFSIZLIK
+    security_opt:
+      - no-new-privileges:true
+
+#    command: >
+#      postgres -c max_connections=1000
+#               -c shared_buffers=256MB
+#               -c effective_cache_size=768MB
+#               -c maintenance_work_mem=64MB
+#               -c checkpoint_completion_target=0.7
+#               -c wal_buffers=16MB
+#               -c default_statistics_target=100
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U dental -d dental_db" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+networks:
+  dental-network:
+    name: dental-network
+    driver: bridge

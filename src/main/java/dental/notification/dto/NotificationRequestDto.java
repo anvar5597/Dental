@@ -8,13 +8,16 @@
 
 package dental.notification.dto;
 
-import dental.client.entity.Client;
+
 import lombok.Data;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class NotificationRequestDto {
     private Long clientId;
-    private LocalDate nextVisit;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime nextVisit;
 }

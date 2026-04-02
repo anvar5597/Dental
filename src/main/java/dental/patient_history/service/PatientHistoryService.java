@@ -12,54 +12,62 @@ import java.util.List;
 
 public interface PatientHistoryService {
 
-    List<PatientResponseDto> findAll();
+  List<PatientResponseDto> findAll();
 
-    List<PatientResponseDto> findAllAfter();
+  List<PatientResponseDto> findAllAfter();
 
-    List<PatientShortInfoDto> findAllShort();
+  List<PatientShortInfoDto> findAllShort();
 
-    List<PatientResponseDto> findByEmpId(Long id);
+  List<PatientResponseDto> findByEmpId(Long id);
 
-    List<PatientResponseDto> findByEmpIdIsServiced(Long id);
+  List<PatientResponseDto> findByEmpIdIsServiced(Long id);
 
-    List<PatientResponseDto> findByEmpIdIsNotServiced(Long id);
+  List<PatientResponseDto> findByEmpIdIsNotServiced(Long id);
 
-    List<PatientResponseDto> findByEmpIdIsServicedBetween(Long id, LocalDateTime start, LocalDateTime end);
+  List<PatientResponseDto> findByEmpIdIsServicedBetween(Long id, LocalDateTime start,
+      LocalDateTime end);
 
-    List<PatientResponseDto>findByClientId(Long id) ;
+  List<PatientResponseDto> findByClientId(Long id);
 
-    PatientHistoryEntity getPatientById(Long id);
+  PatientHistoryEntity getPatientById(Long id);
 
-    List<PatientResponseDto> findDebitPatient();
+  List<PatientResponseDto> findDebitPatient();
 
-    PatientResponseDto findById(Long id);
+  List<PatientResponseDto> findPaidPatient();
 
-    void save(PatientHistoryEntity entity);
+  PatientResponseDto findById(Long id);
 
-    Integer countClientNotServiced();
+  void save(PatientHistoryEntity entity);
 
-    List<MonthlyCountDTO> getMonthlyAppointmentCount();
-    List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
+  Integer countClientNotServiced();
 
-    List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
+  List<MonthlyCountDTO> getMonthlyAppointmentCount();
 
-    Integer countClientServiced();
-    EmployeeShortInfoDto findDoctorId(String token);
-    String create(@org.jetbrains.annotations.NotNull PatientAddDto dto);
+  List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
 
-    String serviced(Long id);
+  List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
 
-    DefaultResponseDto addService(PatientServiceAddDto dto);
+  Integer countClientServiced();
 
-    public PatientShortInfoDto toShortDto(@NotNull PatientHistoryEntity entity);
-    String update(PatientRequestDto dto, Long id);
+  EmployeeShortInfoDto findDoctorId(String token);
 
-    Boolean hasClient(Client client);
-    String delete(Long id);
+  String create(@org.jetbrains.annotations.NotNull PatientAddDto dto);
 
-    void deleteWithEmployee(Long id);
+  String serviced(Long id);
 
-    void deleteWithClient(Long id);
+  DefaultResponseDto addService(PatientServiceAddDto dto);
 
-    String activeDelete(Long id);
+  public PatientShortInfoDto toShortDto(@NotNull PatientHistoryEntity entity);
+
+  String update(PatientRequestDto dto, Long id);
+
+  Boolean hasClient(Client client);
+
+  String delete(Long id);
+
+  void deleteWithEmployee(Long id);
+
+  void deleteWithClient(Long id);
+
+  String activeDelete(Long id);
 }
