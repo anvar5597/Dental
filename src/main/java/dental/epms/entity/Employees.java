@@ -44,17 +44,21 @@ public class Employees implements UserDetails {
 
     @NotBlank
     @Size(max = 50)
-    @Email
     private String email;
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String openPassword;
 
     private LocalDate birthDay;
 
     private String phoneNumber;
 
     private String address;
+
+    private Boolean active=true;
 
     @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL)
     private List<PatientHistoryEntity> entities = new ArrayList<>();

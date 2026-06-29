@@ -22,6 +22,8 @@ public interface TeethService {
 
     TeethResponseDto toDto(TeethEntity entity);
 
+    String activeDelete(Long id);
+
 
 
 

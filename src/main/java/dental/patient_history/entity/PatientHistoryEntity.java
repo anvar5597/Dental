@@ -1,8 +1,5 @@
 /**
- * Author: Anvar Olimov
- * User:user
- * Date:6/24/2024
- * Time:3:05 PM
+ * Author: Anvar Olimov User:user Date:6/24/2024 Time:3:05 PM
  */
 
 
@@ -20,7 +17,6 @@ import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,39 +28,43 @@ import java.util.List;
 @SQLRestriction("deleted <> 'true'")
 public class PatientHistoryEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id")
-    private Employees employees;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "doctor_id")
+  private Employees employees;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id")
-    @JsonIgnore
-    private Client client;
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "client_id")
+  @JsonIgnore
+  private Client client;
 
-    private LocalDate createdAt;
+  private LocalDateTime createdAt;
 
-    private LocalDateTime appointmentTime;
+  private LocalDateTime appointmentTime;
 
-    private LocalDateTime endTime;
+  private LocalDateTime endTime;
 
-    private Integer total;
+  private Integer total;
 
-    private Integer paid;
+  private Integer paid;
 
-    private Integer expense;
+  private Integer expense;
 
-    private Boolean isPaid;
-    @JsonManagedReference
-    @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TeethServiceEntity> teethServiceEntities = new ArrayList<>();
+  private Integer sale;
 
-    private Boolean isServiced;
-    @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL)
-    private List<XRayEntity> xrayImages;
+  private Boolean active = true;
 
-    private Boolean deleted;
+  private Boolean isPaid;
+  @JsonManagedReference
+  @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TeethServiceEntity> teethServiceEntities = new ArrayList<>();
+
+  private Boolean isServiced;
+  @OneToMany(mappedBy = "patientHistory", cascade = CascadeType.ALL)
+  private List<XRayEntity> xrayImages;
+
+  private Boolean deleted;
 }

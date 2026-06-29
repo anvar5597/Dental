@@ -4,6 +4,7 @@ import dental.teeth.dto.TeethRequestDto;
 import dental.teeth.dto.TeethResponseDto;
 import dental.teeth.service.TeethService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,5 +38,10 @@ public class TeethController implements TeethApi {
     @Override
     public void delete(Long id) {
         service.delete(id);
+    }
+
+    @Override
+    public ResponseEntity<String> activeDelete(Long id) {
+        return ResponseEntity.ok(service.activeDelete(id));
     }
 }

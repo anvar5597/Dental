@@ -3,9 +3,10 @@ package dental.epms.service;
 
 import dental.epms.dto.AuthDto;
 import dental.epms.dto.EmployeeRequestDto;
-
+import dental.epms.dto.EmployeeRequestPassword;
 import dental.epms.dto.LoginDto;
 import dental.epms.entity.Employees;
+import dental.epms.entity.JwtTokenEntity;
 import dental.epms.repository.EmployeeRepository;
 import dental.epms.repository.JwtTokenRepo;
 import dental.exception.UnauthorizedException;
@@ -31,6 +32,7 @@ public class AuthServiceImpl  implements  AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public AuthDto login(LoginDto loginDto) {
@@ -73,24 +75,44 @@ public class AuthServiceImpl  implements  AuthService {
         employees.setEmail(dto.getEmail());
         Optional <Employees> employees1=repository.findByEmail(dto.getEmail());
         if (employees1.isPresent()){
-           ResponseEntity.status(400).body("Bunday email mavjud");
+           throw new IllegalArgumentException("Bunday elektron pochta mavjud");
         }
         employees.setPhoneNumber(dto.getPhoneNumber());
         Optional <Employees> employees3=repository.findByPhoneNumber(dto.getPhoneNumber());
         if (employees3.isPresent()){
-            ResponseEntity.status(400).body("Bunday telefon nomer mavjud");
+           throw new IllegalArgumentException("Bunday telefon raqam mavjud");
 
         }
         employees.setLogin(dto.getLogin());
         Optional <Employees> employees2=repository.findByLogin(dto.getLogin());
         if (employees2.isPresent()){
-            ResponseEntity.status(400).body("Bunday foydalanuvchi nomi mavjud");
+        throw new IllegalArgumentException("Bunday foydalanuvchi nomi mavjud");
         }
         employees.setRole(dto.getRole());
+        employees.setOpenPassword(dto.getPassword());
         employees.setPassword(passwordEncoder.encode(dto.getPassword()));
         repository.save(employees);
         return ResponseEntity.ok().body("Hodim yaratildi");
     }
+    @Override
+    public String updatePassword(EmployeeRequestPassword dto, Long id) {
+        Employees employees = repository.getReferenceById(id);
+
+        employees.setLogin(dto.getLogin());
+        employees.setOpenPassword(dto.getPassword());
+        employees.setPassword(passwordEncoder.encode(dto.getPassword()));
+        repository.save(employees);
+        return "Password updated";
+    }
+
+    @Override
+    public String delete(Long id) {
+        Optional<Employees> employeesEntity = employeeRepository.findById(id);
+        if (employeesEntity.isEmpty()) throw new IllegalArgumentException("Bunday foydalanuvchi nomi mavjud");
+       jwtTokenRepo.deleteByUser(employeesEntity.get());
+        return "O`chirildi";
+    }
+
 
     private Employees findEmployeeByLogin(String login)  {
         return Optional.ofNullable(login)

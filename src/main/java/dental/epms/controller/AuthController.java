@@ -1,9 +1,7 @@
 package dental.epms.controller;
 
 
-import dental.epms.dto.AuthDto;
-import dental.epms.dto.EmployeeRequestDto;
-import dental.epms.dto.LoginDto;
+import dental.epms.dto.*;
 import dental.epms.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +31,9 @@ public class AuthController {
         return authService.create(entity);
     }
 
+    @PutMapping("/update-password/{id}")
+    ResponseEntity<String> updatePassword(@RequestBody EmployeeRequestPassword respondPassword, @PathVariable Long id) {
+        return ResponseEntity.ok(authService.updatePassword(respondPassword,id));
+    }
 
 }

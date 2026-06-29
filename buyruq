@@ -1,0 +1,8 @@
+docker run -d \
+  -p 8085:8085 \
+  --env ENV=prod \
+  --name dental-app \
+  -v /root:/root \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  --network dental-network \
+  anvar5597/dental

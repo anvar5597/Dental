@@ -7,53 +7,85 @@ import dental.utils.DefaultResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestMapping("/patient")
 public interface PatientHistoryController {
 
-    @GetMapping("find-all")
-    ResponseEntity<List<PatientResponseDto>> findAll();
+  @GetMapping("find-all")
+  ResponseEntity<List<PatientResponseDto>> findAll();
 
-    @GetMapping("find-all-short")
-    ResponseEntity<List<PatientShortInfoDto>> findAllShort();
-
-    @GetMapping("doctor/{id}")
-    List<PatientResponseDto> findByEmpId(@PathVariable Long id);
-
-    @GetMapping("/{id}")
-    ResponseEntity<PatientResponseDto> findById(@PathVariable Long id);
-
-    @PostMapping("/create")
-    ResponseEntity<String> create(@RequestBody PatientAddDto dto);
-
-    @GetMapping("/clients-not-serviced")
-    Integer countClientNotServiced();
-    @GetMapping("/clients-serviced")
-    Integer countClientServiced();
-
-    @GetMapping("/clients")
-    Integer countClient();
-
-    @GetMapping("/monthly-appointments")
-    public List<MonthlyCountDTO> getMonthlyAppointmentCount();
-
-    @GetMapping("/monthly-income-expense")
-    public List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee() ;
-    @GetMapping("/find-by-token")
-    ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token);
+  @GetMapping("find-all-after")
+  ResponseEntity<List<PatientResponseDto>> findAllAfter();
 
 
-    @PutMapping("/add-service")
-    DefaultResponseDto addService(@RequestBody PatientServiceAddDto dto);
+  @GetMapping("find-all-short")
+  ResponseEntity<List<PatientShortInfoDto>> findAllShort();
 
-    @PutMapping("/serviced/{id}")
-    ResponseEntity<String> serviced(@PathVariable Long id);
+  @GetMapping("doctor/{id}")
+  List<PatientResponseDto> findByEmpId(@PathVariable Long id);
+
+  @GetMapping("doctor-serviced/{id}")
+  ResponseEntity<List<PatientResponseDto>> findByEmpIdIsServiced(@PathVariable Long id);
+
+  @GetMapping("doctor-not-serviced/{id}")
+  ResponseEntity<List<PatientResponseDto>> findByEmpIdIsNotServiced(@PathVariable Long id);
+
+  @GetMapping("/find-client/{id}")
+  ResponseEntity<List<PatientResponseDto>> findByClientId(@PathVariable Long id);
+
+  @GetMapping("/find-debt")
+  ResponseEntity<List<PatientResponseDto>> findDebtPatient();
+
+  @GetMapping("/find-paid")
+  ResponseEntity<List<PatientResponseDto>> findPaidPatient();
+
+  @GetMapping("/{id}")
+  ResponseEntity<PatientResponseDto> findById(@PathVariable Long id);
+
+  @PostMapping("/create")
+  ResponseEntity<String> create(@RequestBody PatientAddDto dto);
+
+  @GetMapping("/clients-serviced")
+  Integer countClientNotServiced();
+
+  @GetMapping("/clients-not-serviced")
+  Integer countClientServiced();
+
+  @GetMapping("/clients")
+  Integer countClient();
+
+  @GetMapping("/monthly-appointments")
+  List<MonthlyCountDTO> getMonthlyAppointmentCount();
+
+  @GetMapping("/monthly-total-income-expense")
+  public List<MonthlyIncomeExpenseDTO> getMonthlyTotalIncomeAndExpense();
+
+  @GetMapping("/monthly-income-expense")
+  List<MonthlyIncomeExpenseDTO> getMonthlyIncomeAndExpensePerEmployee();
+
+  @GetMapping("/find-by-token")
+  ResponseEntity<EmployeeShortInfoDto> findDoctorByToken(String token);
 
 
-    @PutMapping("update/{id}")
-    ResponseEntity<String> update(@RequestBody PatientRequestDto dto, @PathVariable Long id);
+  @PutMapping("/add-service")
+  DefaultResponseDto addService(@RequestBody PatientServiceAddDto dto);
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<String> delete(@PathVariable Long id);
+  @PutMapping("/serviced/{id}")
+  ResponseEntity<String> serviced(@PathVariable Long id);
+
+
+  @PutMapping("update/{id}")
+  ResponseEntity<String> update(@RequestBody PatientRequestDto dto, @PathVariable Long id);
+
+  @GetMapping("/clients-serviced-between/{id}")
+  ResponseEntity<List<PatientResponseDto>> findByClientIdBetween(@PathVariable Long id,
+      @RequestParam LocalDateTime start, @RequestParam LocalDateTime end);
+
+  @DeleteMapping("/{id}")
+  ResponseEntity<String> delete(@PathVariable Long id);
+
+  @DeleteMapping("/passive-delete/{id}")
+  ResponseEntity<String> activeDelete(@PathVariable Long id);
 }

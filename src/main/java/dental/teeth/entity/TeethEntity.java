@@ -3,8 +3,6 @@ package dental.teeth.entity;
 import dental.utils.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Data
@@ -16,6 +14,5 @@ public class TeethEntity {
 
     private String teethName;
 
-
-
+    private Boolean active = true;
 }

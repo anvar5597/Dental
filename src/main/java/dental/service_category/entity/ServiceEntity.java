@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Table(name = TableName.SERVICE)
@@ -20,5 +22,9 @@ public class ServiceEntity {
     private Integer price;
 
     private Integer expense;
+
+    private Boolean active=true;
+
+    private LocalDateTime createdAt;
 
 }

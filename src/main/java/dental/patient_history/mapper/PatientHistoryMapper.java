@@ -1,7 +1,7 @@
 package dental.patient_history.mapper;
 
 
-import dental.patient_history.dto.PatientAddDto;
+import  dental.patient_history.dto.PatientAddDto;
 import dental.patient_history.dto.PatientRequestDto;
 import dental.patient_history.dto.PatientResponseDto;
 import dental.patient_history.entity.PatientHistoryEntity;

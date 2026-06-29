@@ -16,4 +16,6 @@ public class PaymentRequestDto {
     private Long id;
 
     private Integer paidValue;
+
+    private Integer saleValue;
 }

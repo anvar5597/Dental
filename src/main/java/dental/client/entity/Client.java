@@ -27,6 +27,8 @@ public class Client {
 
     private String patronymic;
 
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -35,6 +37,8 @@ public class Client {
     private String phoneNumber;
 
     private String address;
+
+    private Boolean active = true;
 
     private Boolean deleted = false;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
