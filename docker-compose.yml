@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: "dental"
+    environment:
+      ENV: prod
     ports:
       - "8085:8085"
     volumes:
